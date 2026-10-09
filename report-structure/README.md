@@ -90,7 +90,7 @@ The number columns are triple counts of the whole report, as GraphDB returns it 
 Two observations do not affect the proposal, but modellers should be aware of them.
 
 - **Use IRIs for shapes whose results matter.** The report includes a partial description of each shape that results point at, once per report, with only the constraints that failed. In `repeat`, the included description of `ex:SensorReadingShape` lacks the stored shape's `sh:datatype` and `sh:maxCount`. For IRI shapes this description is unnecessary, because `sh:sourceShape` already points at the stored shape. A blank-node shape gets a fresh label in the report and cannot be pointed to, so it can only be recognised by its content.
-- **Recursive shapes are not supported.** A shape that refers back to itself through `sh:node` is rejected at upload with "Recursive shape definition detected while computing hashCode" (`raw/recursive.nt`). SHACL leaves recursion undefined, and GraphDB fails loudly, so this is a limitation, not a bug.
+- **Recursive shapes are not supported.** A shape that refers back to itself through `sh:node` is rejected at upload with "Recursive shape definition detected while computing hashCode" (`raw/recursive.nt`). SHACL leaves recursion undefined
 
 ## Potential follow-up bug
 
