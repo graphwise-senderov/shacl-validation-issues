@@ -47,13 +47,14 @@ Each result names every data graph of the link and the shapes graph again, altho
 
 ### Every validation response report includes the failed shapes
 
-Besides the results, the validation response report contains a partial description of each shape that results point at, once per report, not once per result. In `repeat`, all ten results point at `ex:SensorReadingShape`, and the report contains these shape triples once:
+Besides the results, the validation response report contains a partial description of each shape that results point at:
 
 ```turtle
 [] a sh:ValidationReport ;
     sh:result [ a sh:ValidationResult ; … ; sh:sourceShape ex:SensorReadingShape ],
         … .   # ten results, all with the same sh:sourceShape
 
+# stored, in ex:shapes/repeat, but also copied in the report
 ex:SensorReadingShape a sh:PropertyShape ;
     sh:path ex:reading ;
     sh:minInclusive 0.0 ;
@@ -61,9 +62,7 @@ ex:SensorReadingShape a sh:PropertyShape ;
     sh:message "Reading must be a non-negative decimal." .
 ```
 
-Those triples are not needed, because the shape can be retrieved from the database via the `sh:sourceShape` value of each `sh:ValidationResult`. They are also partial: only the constraint that failed is included, so the stored shape's `sh:datatype xsd:decimal` and `sh:maxCount 1` are missing. Nested shapes behind `sh:or`, `sh:and`, `sh:not` and `sh:node` are included in full. A blank-node shape gets a fresh label in the report, so it cannot be traced back to the stored shape.
-
-So the size problem is the graph pair, not the shapes. The shapes are a problem of clarity and traceability.
+Those triples are not needed, because the shape can be retrieved from the database via the `sh:sourceShape` value of each `sh:ValidationResult`.  However, a blank-node shape gets a fresh label in the report, so it cannot be traced back to the stored shape.
 
 ### Proposal
 
