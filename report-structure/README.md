@@ -5,7 +5,7 @@ This folder proposes a leaner structure for the SHACL validation report that Gra
 ## Summary
 
 - Every `sh:ValidationResult` repeats `rsx:dataGraph` for each data graph of the link and `rsx:shapesGraph` for each shapes graph.
-- In our illustration, which is similar to a real-life case for a client that we have, lifting the graph pair to the report cuts that report from 5906 to 857 triples and from 710 KB to 104 KB (same serializer for both), with no loss of information.
+- In our illustration, which is similar to a real-life case for a client that we have, lifting the graph pair to the report makes that report about seven times smaller, in both triple count and bytes, with no loss of information.
 - The report does copy the source shape, but **once per report, not once per result**. This holds for IRI shapes and for blank-node shapes. The copy is partial: it holds only the parameters of the constraints that failed, plus `sh:name`, `sh:description` and `sh:message`. For `sh:or`, `sh:and`, `sh:not`, `sh:node` and `sh:qualifiedValueShape` it also copies the nested shapes in full.
 - For logical constraints the result points at the outer shape. Nothing in the report says which member of an `sh:and` failed, and nested `sh:node` failures are not reported.
 
