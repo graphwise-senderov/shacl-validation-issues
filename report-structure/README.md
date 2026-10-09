@@ -72,6 +72,8 @@ If all results come from one data/shapes graph pair, which is the usual case of 
 
 The cost per result drops from one triple per graph to zero—we only express the data and shapes graphs information once at root level.
 
+The proposal stays within the W3C SHACL report vocabulary: there is still exactly one `sh:ValidationReport`, only the RDF4J-specific `rsx:` properties move, and all `sh:` properties of the results stay as they are.
+
 ## Results
 
 | Scenario | What it shows | As is | Proposed | Factor |
@@ -82,11 +84,6 @@ The cost per result drops from one triple per graph to zero—we only express th
 | `logic` | Four results in a link with one data graph (also the `sh:xone` side finding) | 81 | 75 | 1.1× |
 
 The number columns are triple counts of the whole report, as GraphDB returns it and with the proposed structure. The factor is the as-is count divided by the proposed count, so higher is better. The factor grows with both the number of data graphs in the link and the number of results, as `fanout` shows; with one data graph and one result, as in `simple`, there is nothing to gain. Byte sizes shrink in the same proportion; see `measurements.md`.
-
-## Compatibility with the W3C report vocabulary
-
-- SHACL requires exactly one `sh:ValidationReport` and allows additional information in the report graph. The proposal keeps one report and only moves `rsx:` properties, which are an RDF4J extension in the first place.
-- All `sh:` properties of the results stay as they are.
 
 ## Side findings
 
