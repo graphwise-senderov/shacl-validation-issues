@@ -100,8 +100,7 @@ def stats(g: Graph) -> dict:
 def main(names):
     for d in ("reports", "dry-reports"):
         Path(d).mkdir(exist_ok=True)
-    print("| capture | form | results | triples | triples per result | rsx triples | shape and pair triples | N-Triples bytes |")
-    print("|---|---|--:|--:|--:|--:|--:|--:|")
+    rows = [["capture", "form", "results", "triples", "triples per result", "rsx triples", "shape and pair triples", "N-Triples bytes"]]
     for name in names:
         g = Graph().parse(f"raw/{name}.nt", format="nt")
         raw = Path(f"raw/{name}.nt").read_text().splitlines()
@@ -112,10 +111,22 @@ def main(names):
             h.serialize(target, format="turtle")
             s = stats(h)
             pr = ", ".join(f"{k}" + (f" (x{v})" if len(s['per_result']) > 1 else "") for k, v in s["per_result"].items())
-            print(f"| {name} | {form} | {s['results']} | {s['triples']} | {pr} | {s['rsx_triples']} | {s['other_triples']} | {s['bytes']} |")
+            rows.append([name, form, s["results"], s["triples"], pr, s["rsx_triples"], s["other_triples"], s["bytes"]])
         if dup:
-            print(f"| {name} | (raw file has {dup} duplicate lines) | | | | | | |")
+            rows.append([name, f"(raw file has {dup} duplicate lines)", "", "", "", "", "", ""])
+    print_table(rows)
+
+
+def print_table(rows):
+    """Print a Markdown table with padded columns; text columns left, numbers right."""
+    rows = [[str(c) for c in r] for r in rows]
+    widths = [max(len(r[i]) for r in rows) for i in range(len(rows[0]))]
+    fmt = lambda r: "| " + " | ".join(c.ljust(w) if i < 2 else c.rjust(w) for i, (c, w) in enumerate(zip(r, widths))) + " |"
+    print(fmt(rows[0]))
+    print("|" + "|".join("-" * (w + 2) if i < 2 else "-" * (w + 1) + ":" for i, w in enumerate(widths)) + "|")
+    for r in rows[1:]:
+        print(fmt(r))
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:] or ["plain", "simple", "repeat", "fanout", "logic", "bnode", "node", "qualified", "twolinks"])
+    main(sys.argv[1:] or ["simple", "repeat", "fanout", "logic", "bnode", "node", "twolinks"])

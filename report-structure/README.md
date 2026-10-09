@@ -12,15 +12,7 @@ This folder proposes a leaner structure for the SHACL validation report that Gra
 
 ### Every result repeats the graph pair
 
-| Scenario                             | Data graphs in link | Results | Triples | Triples per result | of which `rsx:` | Bytes (GraphDB) |
-|--------------------------------------|--------------------:|--------:|--------:|-------------------:|----------------:|----------------:|
-| `simple`: one missing name           |                   1 |       1 |      15 |                  8 |               2 |           1 951 |
-| `repeat`: same shape, 10 violations  |                   5 |      10 |     159 |                 14 |               6 |          20 978 |
-| `fanout`: same shape, 100 violations |                  50 |     100 |   5 906 |                 58 |              51 |         773 637 |
-
-A result costs about seven triples of its own (type, focus node, path, value, severity, constraint component, source shape, and a message if the shape has one) plus `|data graphs| + |shapes graphs|`. The second term is the same for every result of a link. A link with 368 data graphs therefore makes every result about 377 triples long, which is what turns a few thousand results into a report of hundreds of megabytes.
-
-Excerpt from `reports/repeat.ttl` (as Turtle, two of ten results; prefixed names containing `/` are shortened for reading):
+Two of the ten results of the `repeat` scenario, as GraphDB returns them (from `reports/repeat.ttl`; prefixed names containing `/` are shortened for reading):
 
 ```turtle
 [] a sh:ValidationReport ;
@@ -30,7 +22,6 @@ Excerpt from `reports/repeat.ttl` (as Turtle, two of ten results; prefixed names
                           ex:data/repeat-4, ex:data/repeat-5 ;
             rsx:shapesGraph ex:shapes/repeat ;
             sh:focusNode ex:sensor1 ; sh:value -1.5 ; sh:resultPath ex:reading ;
-            sh:resultMessage "Reading must be a non-negative decimal." ;
             sh:resultSeverity sh:Violation ;
             sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
             sh:sourceShape ex:SensorReadingShape ],
@@ -39,25 +30,16 @@ Excerpt from `reports/repeat.ttl` (as Turtle, two of ten results; prefixed names
                           ex:data/repeat-4, ex:data/repeat-5 ;
             rsx:shapesGraph ex:shapes/repeat ;
             sh:focusNode ex:sensor5 ; sh:value -5.5 ; sh:resultPath ex:reading ;
-            # … same five lines as above …
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
             sh:sourceShape ex:SensorReadingShape ] .
-
-# Copied once, although ten results point at it. sh:datatype and sh:maxCount
-# of the stored shape are missing because they did not fail.
-ex:SensorReadingShape a sh:PropertyShape ; sh:path ex:reading ;
-    sh:minInclusive 0.0 ; sh:name "reading" ;
-    sh:description "A non-negative decimal reading." ;
-    sh:message "Reading must be a non-negative decimal." .
 ```
+
+Each result names every data graph of the link and the shapes graph again, although they are the same for all results. The report therefore grows with the number of graphs times the number of results: with 368 data graphs, every result is about 377 triples long instead of about eight.
 
 ### Every report copies the failed shapes
 
-We checked every capture for whether each result repeats the whole failing shape. It does not, but a weaker form holds:
-
-- **Copied once.** In `repeat` and `fanout`, ten and a hundred results share one copy of the IRI shape. In `bnode`, six results (two constraint components, four focus nodes) share one blank node label (`_:node18`), and its triples appear once. No capture contains a duplicate line.
-- **Partial.** `simple` copies `ex:PersonNameShape` with `sh:minCount` but without `sh:datatype`. A reader of the report sees a shape that differs from the stored one.
-- **Nested shapes are copied in full.** `logic` copies both members of each `sh:or` / `sh:and` list and the named shapes behind `sh:or ( ex:PersonOwnerShape ex:OrgOwnerShape )`. `node` copies `ex:AddressShape` with all its constraints, although only `sh:pattern` failed. In `logic`, 38 of 81 triples are shape copies.
-- **Blank-node copies cannot be traced back.** The copied blank node gets a fresh label, so a consumer cannot find the stored shape it came from except by comparing content.
+The report also copies each shape that results point at. It does so once per report, not once per result, for IRI shapes and blank-node shapes alike. The copy is partial: it holds only the constraints that failed, so the copy of `ex:SensorReadingShape` in `repeat` lacks the shape's `sh:datatype` and `sh:maxCount`. Nested shapes behind `sh:or`, `sh:and`, `sh:not` and `sh:node` are copied in full. For IRI shapes the copy is unnecessary, because `sh:sourceShape` already names the shape and the shape is in the shapes graph. A copied blank-node shape gets a fresh label, so it cannot be traced back to the stored shape.
 
 So the size problem is the graph pair, not the shapes. The shapes are a problem of clarity and traceability.
 
@@ -65,29 +47,9 @@ So the size problem is the graph pair, not the shapes. The shapes are a problem 
 
 #### Level 1: the graph pair goes on the report
 
-If all results come from one data/shapes graph pair, which is the usual case of one link, put `rsx:dataGraph` and `rsx:shapesGraph` on the `sh:ValidationReport` and nowhere else. If one transaction validates several pairs, add one node per pair and one triple per result that points at it:
+If all results come from one data/shapes graph pair, which is the usual case of one link, `rsx:dataGraph` and `rsx:shapesGraph` go on the `sh:ValidationReport` and nowhere else. The same two results after level 1:
 
 ```turtle
-[] a sh:ValidationReport ;
-    rsx:graphPair _:p1, _:p2 ;
-    sh:result [ a sh:ValidationResult ; rsx:graphPair _:p1 ; … ] .
-_:p1 a rsx:GraphPair ; rsx:dataGraph ex:data/simple ; rsx:shapesGraph ex:shapes/simple .
-```
-
-The cost per result drops from `|D| + |S|` triples to zero or one. The link IRI could serve as the pair node, but shapes in `rdf4j:SHACLShapeGraph` (`plain`) have no link, so a dedicated node is simpler.
-
-#### Level 2: shapes on the report, results only reference them
-
-- An IRI source shape is not copied. `sh:sourceShape <iri>` resolves in the shapes graph that the report already names.
-- A blank-node source shape is copied once per report, as GraphDB does now, but completely and with an address that locates it in the shapes graph (see below).
-- An option to include full copies of IRI shapes keeps the report self-contained for consumers that need it.
-
-## Results
-
-The same ten results of `repeat` (files `reports/repeat.ttl` and `dry-reports/repeat-level2.ttl`):
-
-```turtle
-# after: 99 triples instead of 159, 8 per result instead of 14
 [] a sh:ValidationReport ;
     sh:conforms false ;
     rsx:dataGraph ex:data/repeat-1, ex:data/repeat-2, ex:data/repeat-3,
@@ -95,23 +57,59 @@ The same ten results of `repeat` (files `reports/repeat.ttl` and `dry-reports/re
     rsx:shapesGraph ex:shapes/repeat ;
     sh:result [ a sh:ValidationResult ;
             sh:focusNode ex:sensor1 ; sh:value -1.5 ; sh:resultPath ex:reading ;
-            sh:resultMessage "Reading must be a non-negative decimal." ;
             sh:resultSeverity sh:Violation ;
             sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
             sh:sourceShape ex:SensorReadingShape ],
-        … .
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:sensor5 ; sh:value -5.5 ; sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ] .
 ```
 
-| Scenario                                          |                 As is |     Level 1 |     Level 2 |
-|---------------------------------------------------|----------------------:|------------:|------------:|
-| `repeat` (10 results, 5 graphs)                   |           159 triples |         105 |          99 |
-| `fanout` (100 results, 50 graphs)                 | 5 906 triples, 710 KB | 857, 104 KB | 854, 104 KB |
-| `logic` (4 results, 1 graph)                      |            81 triples |          75 |          37 |
-| `twolinks` (3 results, 2 pairs of one graph each) |            38 triples |          43 |          40 |
+If one transaction validates several pairs, as in `twolinks`, each pair becomes one node on the report, and each result points at its pair with one triple:
 
-Level 1 pays off as soon as a link has more than one graph and more than one result. With several pairs of one data graph each and few results, as in `twolinks`, the pair nodes cost a few triples more than they save. Level 2 saves a constant per report, not per result.
+```turtle
+[] a sh:ValidationReport ;
+    rsx:graphPair _:a, _:b ;
+    sh:result [ a sh:ValidationResult ; rsx:graphPair _:a ; sh:focusNode ex:tlPerson2 ; … ],
+              [ a sh:ValidationResult ; rsx:graphPair _:b ; sh:focusNode ex:tlContact2 ; … ] .
+_:a a rsx:GraphPair ; rsx:dataGraph ex:data/twolinks-a ; rsx:shapesGraph ex:shapes/twolinks-a .
+_:b a rsx:GraphPair ; rsx:dataGraph ex:data/twolinks-b ; rsx:shapesGraph ex:shapes/twolinks-b .
+```
 
-## Logical constraints, blank nodes, `sh:node` and qualified shapes
+The cost per result drops from one triple per graph to zero or one.
+
+#### Level 2: shapes are referenced, not copied
+
+An IRI shape is not copied. `sh:sourceShape ex:SensorReadingShape` resolves in the shapes graph that the report names, so the level 1 example above is already the level 2 form for `repeat`. An option to include full copies keeps the report self-contained for consumers that need it.
+
+A blank-node shape cannot be referenced from outside its graph, so it is copied once per report, completely, with an address that locates it in the shapes graph (see the recommended scheme below). For the blank e-mail property shape of `bnode`:
+
+```turtle
+[] a sh:ValidationReport ;
+    sh:result [ a sh:ValidationResult ; sh:focusNode ex:c2 ; sh:sourceShape _:email ; … ],
+              [ a sh:ValidationResult ; sh:focusNode ex:c3 ; sh:sourceShape _:email ; … ] .
+_:email a sh:PropertyShape ; sh:path ex:email ; sh:pattern "^[^@]+@[^@]+$" ; sh:maxCount 1 ;
+    rsx:shapeId <urn:rsx:shape:sha256:…> ;
+    rsx:parentShape ex:ContactShape ; rsx:parentProperty sh:property .
+```
+
+## Results
+
+| Scenario | What it shows | As is | Level 1 | Level 2 | Factor |
+|---|---|--:|--:|--:|--:|
+| `simple` | One missing value; the copied shape is partial | 15 | 15 | 12 | 1.3× |
+| `repeat` | One shape violated 10 times in a link with 5 data graphs | 159 | 105 | 99 | 1.6× |
+| `fanout` | One shape violated 100 times in a link with 50 data graphs | 5 906 | 857 | 854 | 6.9× |
+| `logic` | Violations inside `sh:or`, `sh:and` and `sh:not` | 81 | 75 | 37 | 2.2× |
+| `bnode` | Six results on blank-node property shapes | 66 | 56 | 56 | 1.2× |
+| `node` | A violation through `sh:node` | 22 | 22 | 16 | 1.4× |
+| `twolinks` | Two links, each with one data graph, in one transaction | 38 | 43 | 40 | 0.95× |
+
+The three number columns are triple counts of the whole report: as GraphDB returns it, after level 1, and after level 2. The factor is the as-is count divided by the level 2 count, so higher is better. Level 1 matters most when a link has many data graphs and many results, as in `fanout`; the factor grows with both. Level 2 saves a fixed amount per report, which is large when nested shapes are copied, as in `logic`, and zero for blank-node shapes, as in `bnode`. With several pairs of one data graph each and few results, as in `twolinks`, the pair nodes cost a few triples more than they save. Byte sizes shrink in the same proportion; see `measurements.md`.
+
+## Logical constraints, blank nodes and `sh:node`
 
 What the captures show (`reports/*.ttl`):
 
@@ -122,7 +120,6 @@ What the captures show (`reports/*.ttl`):
 | `sh:not [hasValue "none"]`                                    | outer property shape                      | `sh:NotConstraintComponent`               | nothing: the inner shape conformed                 |
 | `sh:xone ( … )`                                               | no result at all                          |                                           | see side findings                                  |
 | `sh:node ex:AddressShape`                                     | outer blank property shape                | `sh:NodeConstraintComponent`              | the nested postcode failure                        |
-| `sh:qualifiedValueShape [class Wheel]`, `qualifiedMinCount 4` | outer blank property shape                | `sh:QualifiedMinCountConstraintComponent` | nothing essential                                  |
 | blank `sh:property [ … ]`                                     | the blank node, shared by all its results | as failed                                 | a link to the stored node                          |
 
 Pointing at the outer shape is correct. SHACL defines `sh:sourceShape` as the shape the focus node was validated against, and the constraint component belongs to that shape. The member that caused the failure is additional information, and SHACL already has a place for it: `sh:detail`, which the spec mentions explicitly for `sh:node`.
@@ -130,7 +127,7 @@ Pointing at the outer shape is correct. SHACL defines `sh:sourceShape` as the sh
 The hard part is naming a member without copying it. A member of an `sh:or` / `sh:and` / `sh:xone` list is just the node in `rdf:first`; a result can reference that node directly, with no need to copy the list. The problem is only that the node is usually blank. Three ways to address a blank shape, and their limits:
 
 1.  **Parent and list index**, e.g. `ex:ItemSizeShape`, `sh:and`, member 2. Works for lists and for `sh:not`, but not for `sh:property`, whose values have no order, and two property shapes on the same path are common. The index changes when the list is edited. A nested member needs a chain of steps back to the nearest IRI.
-2.  **Content hash**, a deterministic IRI computed from the canonical triples of the shape. Stable across reloads and works everywhere. Two identical blank shapes under different parents get the same id, and any edit gives a new id. GraphDB already hashes shapes internally (the recursive shape in `raw/recursive.nt` fails "while computing hashCode").
+2.  **Content hash**, a deterministic IRI computed from the canonical triples of the shape. Stable across reloads and works everywhere. Two identical blank shapes under different parents get the same id, and any edit gives a new id. GraphDB already hashes shapes internally (see the recursive shape under side findings).
 3.  **IRIs in the shapes graph.** The only fully reliable way, and the one to recommend to modellers for shapes whose results matter.
 
 ### Recommended scheme
@@ -141,18 +138,11 @@ The hard part is naming a member without copying it. A member of an `sh:or` / `s
 - When asked for, a result for `sh:and`, `sh:or` or `sh:node` gets `sh:detail` child results whose `sh:sourceShape` is the failing member, addressed the same way. For `sh:not` there is nothing to detail. This is optional because it makes reports larger.
 
 ```turtle
-# sh:and result with detail (proposed)
-_:r a sh:ValidationResult ;
-    sh:focusNode ex:badSize ; sh:value "abcdefgh" ; sh:resultPath ex:size ;
-    sh:sourceShape ex:ItemSizeShape ;
-    sh:sourceConstraintComponent sh:AndConstraintComponent ;
-    sh:detail [ a sh:ValidationResult ;
-        sh:focusNode ex:badSize ; sh:value "abcdefgh" ;
-        sh:sourceShape _:m2 ;
-        sh:sourceConstraintComponent sh:MaxLengthConstraintComponent ] .
-_:m2 sh:maxLength 5 ;
-    rsx:parentShape ex:ItemSizeShape ; rsx:parentProperty sh:and ; rsx:memberIndex 2 ;
-    rsx:shapeId <urn:rsx:shape:sha256:…> .
+# proposed: an sh:and result that names the failing member
+_:r sh:sourceShape ex:ItemSizeShape ; sh:sourceConstraintComponent sh:AndConstraintComponent ;
+    sh:detail [ a sh:ValidationResult ; sh:focusNode ex:badSize ; sh:sourceShape _:m2 ;
+                sh:sourceConstraintComponent sh:MaxLengthConstraintComponent ] .
+_:m2 sh:maxLength 5 ; rsx:parentShape ex:ItemSizeShape ; rsx:parentProperty sh:and ; rsx:memberIndex 2 .
 ```
 
 Limits: a blank shape used by two parents has two addresses but one id; `sh:property` members can only be found by id or by content; and recursive shapes, which references would handle without infinite copying, are rejected by GraphDB today.
@@ -166,19 +156,17 @@ Limits: a blank shape used by two parents has two addresses but one id; `sh:prop
 ## Side findings
 
 - `sh:xone` is silently ignored. `ex:badColour2` ("blue") matches neither member of `sh:xone` and gets no result, and the copied `ex:ItemColourShape` has no `sh:xone`. RDF4J does not list `sh:xone` among supported predicates; an error at shape load time would be better.
-- A recursive shape (`input/recursive.trig`) is rejected with "Recursive shape definition detected while computing hashCode".
-- Without an `Accept` header the report comes as `application/shacl-validation-report+n-quads;charset=ISO-8859-1`.
-
+- A recursive shape is rejected with "Recursive shape definition detected while computing hashCode" (`raw/recursive.nt`).
 
 ## Methods
 
-`capture.sh` loads each scenario in `input/`, then posts the link in `links/` into `rdf4j:SHACLShapeGraph`. The commit fails and the response body is the report, saved to `raw/<name>.nt`. `measure.py` counts it, writes it as pretty Turtle to `reports/<name>.ttl`, and writes the proposed forms to `dry-reports/`. Full table: `measurements.md`.
+`capture.sh` loads each scenario in `input/`, then posts the link in `links/` into `rdf4j:SHACLShapeGraph`. The commit fails and the response body is the report, saved to `raw/<name>.nt`. `measure.py` counts it, writes it as pretty Turtle to `reports/<name>.ttl`, and writes the two proposed forms to `dry-reports/`. Full table, including byte sizes: `measurements.md`. `recursive` produces an error message instead of a report and is not measured.
 
-Raw byte counts vary by a few bytes between runs because GraphDB's blank-node labels differ in length; triple counts do not.
+Raw byte counts vary by a few bytes between runs because GraphDB's blank-node labels differ in length; triple counts do not. Without an `Accept` header the report comes as `application/shacl-validation-report+n-quads;charset=ISO-8859-1` (`raw/simple-default.*`).
 
 ### Reproduce
 
-Each scenario is independent. It needs only its own `input/<case>.trig` and `links/<case>.ttl`, uses its own graphs, classes and focus nodes, and gives the same report on an empty repository as in a repository where all other scenarios are already loaded. Every link commit fails validation and is rolled back, so nothing is left in `rdf4j:SHACLShapeGraph` afterwards (`capture.sh` prints the count after each case). Shapes posted straight into `rdf4j:SHACLShapeGraph` validate every graph in the repository, so `plain` targets a class, `ex:PlainPerson`, that no other scenario uses. Both ways were checked: every case alone in a fresh repository, and all cases in sequence in one repository; `compare.py` found the raw reports identical up to blank-node labels.
+Each scenario is independent. It needs only its own `input/<case>.trig` and `links/<case>.ttl`, uses its own graphs, classes and focus nodes, and gives the same report on an empty repository as in a repository where all other scenarios are already loaded. Every link commit fails validation and is rolled back, so nothing is left in `rdf4j:SHACLShapeGraph` afterwards (`capture.sh` prints the count after each case). Both ways were checked: every case alone in a fresh repository, and all cases in sequence in one repository; `compare.py` found the raw reports identical up to blank-node labels.
 
 ```bash
 export GDB_URL=http://localhost:7200 GDB_PASSWORD=…   # GDB_USER defaults to admin
@@ -202,7 +190,7 @@ curl -u admin:$GDB_PASSWORD -X POST -H 'Content-Type: text/turtle' -H 'Accept: a
 ### Files
 
 - `repo-config.ttl`: repository config; every scenario's shapes graph is on `shacl:shapesGraph`.
-- `input/<name>.trig`: shapes and data per scenario; `links/<name>.ttl`: the link that triggers validation (`plain.ttl` holds shapes for `rdf4j:SHACLShapeGraph` instead).
+- `input/<case>.trig`: shapes and data per scenario; `links/<case>.ttl`: the link that triggers validation.
 - `raw/`: reports exactly as GraphDB returned them (N-Triples), the GraphDB version, and the report without an `Accept` header plus its content type.
 - `reports/<case>.ttl`: the raw report as formatted Turtle.
 - `dry-reports/<case>-level1.ttl`, `-level2.ttl`: the same report rewritten into the two proposed forms by `measure.py`.

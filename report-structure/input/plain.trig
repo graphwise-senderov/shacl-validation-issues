@@ -1,7 +1,0 @@
-@prefix ex: <http://example.org/> .
-
-# Data only. The shapes go straight into rdf4j:SHACLShapeGraph (links/plain.ttl).
-ex:data\/plain {
-    ex:dora a ex:PlainPerson ; ex:name "Dora" .
-    ex:eve a ex:PlainPerson .
-}

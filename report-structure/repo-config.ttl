@@ -31,7 +31,6 @@
                 <http://example.org/shapes/logic>,
                 <http://example.org/shapes/bnode>,
                 <http://example.org/shapes/node>,
-                <http://example.org/shapes/qualified>,
                 <http://example.org/shapes/fanout>,
                 <http://example.org/shapes/recursive>,
                 <http://example.org/shapes/twolinks-a>,

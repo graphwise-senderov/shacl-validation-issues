@@ -1,7 +1,0 @@
-@prefix rsx: <http://rdf4j.org/shacl-extensions#> .
-@prefix ex: <http://example.org/> .
-
-# Post into rdf4j:SHACLShapeGraph. Validates ex:data/qualified against ex:shapes/qualified.
-ex:link\/qualified a rsx:DataAndShapesGraphLink ;
-    rsx:dataGraph ex:data\/qualified ;
-    rsx:shapesGraph ex:shapes\/qualified .
