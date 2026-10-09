@@ -85,11 +85,16 @@ The proposal stays within the W3C SHACL report vocabulary: there is still exactl
 
 The number columns are triple counts of the whole report, as GraphDB returns it and with the proposed structure. The factor is the as-is count divided by the proposed count, so higher is better. The factor grows with both the number of data graphs in the link and the number of results, as `fanout` shows; with one data graph and one result, as in `simple`, there is nothing to gain. Byte sizes shrink in the same proportion; see `measurements.md`.
 
-## Side findings
+## Notes for modellers
 
-- The report includes a partial description of each shape that results point at, once per report, with only the constraints that failed. In `repeat`, the copy of `ex:SensorReadingShape` lacks the stored shape's `sh:datatype` and `sh:maxCount`. For IRI shapes the copy is unnecessary, because `sh:sourceShape` already points at the stored shape. A blank-node shape gets a fresh label in the report and cannot be pointed to, so modellers should give IRIs to shapes whose results matter.
-- `sh:xone` is silently ignored. `ex:badColour2` ("blue") matches neither member of `sh:xone` and gets no result, and the copied `ex:ItemColourShape` has no `sh:xone`. RDF4J does not list `sh:xone` among supported predicates; an error at shape load time would be better.
-- A recursive shape is rejected with "Recursive shape definition detected while computing hashCode" (`raw/recursive.nt`).
+Two observations do not affect the proposal, but modellers should be aware of them.
+
+- **Use IRIs for shapes whose results matter.** The report includes a partial description of each shape that results point at, once per report, with only the constraints that failed. In `repeat`, the included description of `ex:SensorReadingShape` lacks the stored shape's `sh:datatype` and `sh:maxCount`. For IRI shapes this description is unnecessary, because `sh:sourceShape` already points at the stored shape. A blank-node shape gets a fresh label in the report and cannot be pointed to, so it can only be recognised by its content.
+- **Recursive shapes are not supported.** A shape that refers back to itself through `sh:node` is rejected at upload with "Recursive shape definition detected while computing hashCode" (`raw/recursive.nt`). SHACL leaves recursion undefined, and GraphDB fails loudly, so this is a limitation, not a bug.
+
+## Potential follow-up bug
+
+`sh:xone` is silently ignored. `ex:badColour2` ("blue") matches neither member of `sh:xone` and gets no result, and the included description of `ex:ItemColourShape` has no `sh:xone`. RDF4J does not list `sh:xone` among supported predicates; an error at shape load time would be better than silently accepting a constraint that is never checked.
 
 ## Methods
 
