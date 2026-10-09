@@ -45,9 +45,9 @@ The following snippet illustrates the problem (from `reports/repeat.ttl`; for re
 
 Each result names every data graph of the link and the shapes graph again, although they are the same for all results. The report therefore grows with the number of graphs times the number of results: here, with 368 data graphs, every result is about 377 triples long instead of about eight.
 
-### Every report copies the failed shapes
+### Every validation response report copies the failed shapes
 
-The report also copies each shape that results point at. In `repeat`, the stored shape and its copy in the report are:
+The validation response report also contains each shape that results point at:
 
 ```turtle
 # stored, in ex:shapes/repeat
@@ -64,6 +64,8 @@ ex:SensorReadingShape a sh:PropertyShape ;
     sh:name "reading" ; sh:description "A non-negative decimal reading." ;
     sh:message "Reading must be a non-negative decimal." .
 ```
+
+Those are not needed because they can be retrieved from the database from the  `sh:sourceShape`  property value of each `sh:ValidationResult`.
 
 It does so once per report, not once per result, for IRI shapes and blank-node shapes alike. The copy is partial: it holds only the constraints that failed, so the copy of `ex:SensorReadingShape` in `repeat` lacks the shape's `sh:datatype` and `sh:maxCount`. Nested shapes behind `sh:or`, `sh:and`, `sh:not` and `sh:node` are copied in full. For IRI shapes the copy is unnecessary, because `sh:sourceShape` already names the shape and the shape is in the shapes graph. A copied blank-node shape gets a fresh label, so it cannot be traced back to the stored shape.
 
