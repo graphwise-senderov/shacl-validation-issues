@@ -32,8 +32,6 @@
                 <http://example.org/shapes/bnode>,
                 <http://example.org/shapes/node>,
                 <http://example.org/shapes/fanout>,
-                <http://example.org/shapes/recursive>,
-                <http://example.org/shapes/twolinks-a>,
-                <http://example.org/shapes/twolinks-b>
+                <http://example.org/shapes/recursive>
         ]
     ].

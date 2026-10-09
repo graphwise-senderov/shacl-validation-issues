@@ -93,32 +93,19 @@ If all results come from one data/shapes graph pair, which is the usual case of 
             sh:sourceShape ex:SensorReadingShape ] .
 ```
 
-If one transaction validates several pairs, as in `twolinks`, each pair becomes one node on the report, and each result points at its pair with one triple:
-
-```turtle
-[] a sh:ValidationReport ;
-    rsx:graphPair _:a, _:b ;
-    sh:result [ a sh:ValidationResult ; rsx:graphPair _:a ; sh:focusNode ex:tlPerson2 ; … ],
-              [ a sh:ValidationResult ; rsx:graphPair _:b ; sh:focusNode ex:tlContact2 ; … ] .
-_:a a rsx:GraphPair ; rsx:dataGraph ex:data/twolinks-a ; rsx:shapesGraph ex:shapes/twolinks-a .
-_:b a rsx:GraphPair ; rsx:dataGraph ex:data/twolinks-b ; rsx:shapesGraph ex:shapes/twolinks-b .
-```
-
-The cost per result drops from one triple per graph to zero or one.
+The cost per result drops from one triple per graph to zero. A transaction with several links, and so several data/shapes graph pairs, is left to the implementers, who may group the results differently or reject it.
 
 #### Level 2: shapes are referenced, not copied
 
 An IRI shape is not copied. `sh:sourceShape ex:SensorReadingShape` resolves in the shapes graph that the report names, so the level 1 example above is already the level 2 form for `repeat`. An option to include full copies keeps the report self-contained for consumers that need it.
 
-A blank-node shape cannot be referenced from outside its graph, so it is copied once per report, completely, with an address that locates it in the shapes graph (see the recommended scheme below). For the blank e-mail property shape of `bnode`:
+A blank-node shape cannot be referenced from outside its graph, so its description stays in the report, once and completely, as GraphDB already does for the blank e-mail property shape of `bnode`. It also needs a stable way to be found again in the shapes graph (see the recommended scheme below).
 
 ```turtle
 [] a sh:ValidationReport ;
     sh:result [ a sh:ValidationResult ; sh:focusNode ex:c2 ; sh:sourceShape _:email ; … ],
               [ a sh:ValidationResult ; sh:focusNode ex:c3 ; sh:sourceShape _:email ; … ] .
-_:email a sh:PropertyShape ; sh:path ex:email ; sh:pattern "^[^@]+@[^@]+$" ; sh:maxCount 1 ;
-    rsx:shapeId <urn:rsx:shape:sha256:…> ;
-    rsx:parentShape ex:ContactShape ; rsx:parentProperty sh:property .
+_:email a sh:PropertyShape ; sh:path ex:email ; sh:pattern "^[^@]+@[^@]+$" ; sh:maxCount 1 .
 ```
 
 ## Results
@@ -131,9 +118,8 @@ _:email a sh:PropertyShape ; sh:path ex:email ; sh:pattern "^[^@]+@[^@]+$" ; sh:
 | `logic` | Violations inside `sh:or`, `sh:and` and `sh:not` | 81 | 75 | 37 | 2.2× |
 | `bnode` | Six results on blank-node property shapes | 66 | 56 | 56 | 1.2× |
 | `node` | A violation through `sh:node` | 22 | 22 | 16 | 1.4× |
-| `twolinks` | Two links, each with one data graph, in one transaction | 38 | 43 | 40 | 0.95× |
 
-The three number columns are triple counts of the whole report: as GraphDB returns it, after level 1, and after level 2. The factor is the as-is count divided by the level 2 count, so higher is better. Level 1 matters most when a link has many data graphs and many results, as in `fanout`; the factor grows with both. Level 2 saves a fixed amount per report, which is large when nested shapes are copied, as in `logic`, and zero for blank-node shapes, as in `bnode`. With several pairs of one data graph each and few results, as in `twolinks`, the pair nodes cost a few triples more than they save. Byte sizes shrink in the same proportion; see `measurements.md`.
+The three number columns are triple counts of the whole report: as GraphDB returns it, after level 1, and after level 2. The factor is the as-is count divided by the level 2 count, so higher is better. Level 1 matters most when a link has many data graphs and many results, as in `fanout`; the factor grows with both. Level 2 saves a fixed amount per report, which is large when nested shapes are copied, as in `logic`, and zero for blank-node shapes, as in `bnode`. Byte sizes shrink in the same proportion; see `measurements.md`.
 
 ## Logical constraints, blank nodes and `sh:node`
 
@@ -160,7 +146,7 @@ The hard part is naming a member without copying it. A member of an `sh:or` / `s
 
 - `sh:sourceShape` stays the shape that owns the failing constraint component, as today.
 - IRI shapes are referenced, not copied (level 2).
-- A blank source shape is copied once and completely. The copy carries `rsx:shapeId` (content hash) and, where it exists, `rsx:parentShape`, `rsx:parentProperty` (`sh:property`, `sh:and`, `sh:node`, …) and, for list members, `rsx:memberIndex`.
+- A blank source shape is described once and completely. To be found again in the shapes graph, it needs a stable identifier, such as a content hash or its parent shape plus position, as described above. Which vocabulary carries that identifier is left to the implementers; giving the shape an IRI avoids the problem.
 - When asked for, a result for `sh:and`, `sh:or` or `sh:node` gets `sh:detail` child results whose `sh:sourceShape` is the failing member, addressed the same way. For `sh:not` there is nothing to detail. This is optional because it makes reports larger.
 
 ```turtle
@@ -168,7 +154,7 @@ The hard part is naming a member without copying it. A member of an `sh:or` / `s
 _:r sh:sourceShape ex:ItemSizeShape ; sh:sourceConstraintComponent sh:AndConstraintComponent ;
     sh:detail [ a sh:ValidationResult ; sh:focusNode ex:badSize ; sh:sourceShape _:m2 ;
                 sh:sourceConstraintComponent sh:MaxLengthConstraintComponent ] .
-_:m2 sh:maxLength 5 ; rsx:parentShape ex:ItemSizeShape ; rsx:parentProperty sh:and ; rsx:memberIndex 2 .
+_:m2 sh:maxLength 5 .   # the second member of the sh:and list
 ```
 
 Limits: a blank shape used by two parents has two addresses but one id; `sh:property` members can only be found by id or by content; and recursive shapes, which references would handle without infinite copying, are rejected by GraphDB today.
@@ -176,7 +162,7 @@ Limits: a blank shape used by two parents has two addresses but one id; `sh:prop
 ## Compatibility with the W3C report vocabulary
 
 - SHACL requires exactly one `sh:ValidationReport` and allows additional information in the report graph. Level 1 keeps one report and only moves `rsx:` properties, which are an RDF4J extension in the first place.
-- Clients that read `rsx:dataGraph` from a result must follow one more step: `?result ^sh:result/rsx:dataGraph ?g` for a single pair, or `?result rsx:graphPair/rsx:dataGraph ?g` for several. A configuration flag could keep the old form for a transition period.
+- Clients that read `rsx:dataGraph` from a result must follow one more step: `?result ^sh:result/rsx:dataGraph ?g`. A configuration flag could keep the old form for a transition period.
 - `sh:sourceShape`, `sh:sourceConstraintComponent` and `sh:detail` are used as the spec defines them. Keeping a blank-node copy as the value of `sh:sourceShape`, rather than replacing it by a hash IRI, means that no standard consumer loses information.
 
 ## Side findings

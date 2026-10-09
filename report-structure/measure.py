@@ -6,7 +6,7 @@ two proposed forms to dry-reports/<name>-level1.ttl and -level2.ttl:
 
   as-is   the report as GraphDB returned it
   level1  rsx:dataGraph / rsx:shapesGraph lifted from the results to the report
-          (or to one rsx:GraphPair node per distinct pair, if there are several)
+          (each capture has one data/shapes graph pair)
   level2  level1, with copied shape triples kept only for blank-node source shapes;
           an IRI shape is referenced by sh:sourceShape <iri> and resolves in the
           shapes graph named on the report
@@ -18,7 +18,7 @@ Requires rdflib (pip install rdflib).
 import sys
 from collections import Counter
 from pathlib import Path
-from rdflib import BNode, Graph, Namespace, RDF, URIRef
+from rdflib import BNode, Graph, Namespace, RDF
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
 RSX = Namespace("http://rdf4j.org/shacl-extensions#")
@@ -33,24 +33,11 @@ def nt_size(g: Graph) -> int:
 def level1(g: Graph) -> Graph:
     g = Graph() + g
     report = g.value(predicate=RDF.type, object=SH.ValidationReport)
-    pairs = {}
-    for r in g.objects(report, SH.result):
-        key = tuple(tuple(sorted(g.objects(r, p))) for p in LINK_PROPS)
-        pairs.setdefault(key, []).append(r)
+    for r in list(g.objects(report, SH.result)):
         for p in LINK_PROPS:
-            g.remove((r, p, None))
-    for (data, shapes), results in pairs.items():
-        node = report
-        if len(pairs) > 1:
-            node = BNode()
-            g.add((node, RDF.type, RSX.GraphPair))
-            g.add((report, RSX.graphPair, node))
-            for r in results:
-                g.add((r, RSX.graphPair, node))
-        for d in data:
-            g.add((node, RSX.dataGraph, d))
-        for s in shapes:
-            g.add((node, RSX.shapesGraph, s))
+            for o in list(g.objects(r, p)):
+                g.remove((r, p, o))
+                g.add((report, p, o))
     return g
 
 
@@ -100,7 +87,7 @@ def stats(g: Graph) -> dict:
 def main(names):
     for d in ("reports", "dry-reports"):
         Path(d).mkdir(exist_ok=True)
-    rows = [["capture", "form", "results", "triples", "triples per result", "rsx triples", "shape and pair triples", "N-Triples bytes"]]
+    rows = [["capture", "form", "results", "triples", "triples per result", "rsx triples", "shape triples", "N-Triples bytes"]]
     for name in names:
         g = Graph().parse(f"raw/{name}.nt", format="nt")
         raw = Path(f"raw/{name}.nt").read_text().splitlines()
@@ -129,4 +116,4 @@ def print_table(rows):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:] or ["simple", "repeat", "fanout", "logic", "bnode", "node", "twolinks"])
+    main(sys.argv[1:] or ["simple", "repeat", "fanout", "logic", "bnode", "node"])

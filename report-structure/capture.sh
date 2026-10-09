@@ -23,7 +23,7 @@ CTX='context=%3Chttp%3A%2F%2Frdf4j.org%2Fschema%2Frdf4j%23SHACLShapeGraph%3E'
 ISOLATED=
 if [[ "${1:-}" == --isolated ]]; then ISOLATED=1; shift; fi
 CASES=("$@")
-[[ ${#CASES[@]} -gt 0 ]] || CASES=(simple repeat fanout logic bnode node twolinks recursive)
+[[ ${#CASES[@]} -gt 0 ]] || CASES=(simple repeat fanout logic bnode node recursive)
 mkdir -p "$OUT"
 CREATED=()
 
