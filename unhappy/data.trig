@@ -1,0 +1,17 @@
+@prefix ex: <http://example.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Shapes, in a graph that was added to the allow-list after creation.
+ex:shapes\/company {
+    ex:CompanyShape a sh:NodeShape ;
+        sh:targetClass ex:Company ;
+        sh:property [ sh:path ex:name ; sh:minCount 1 ] ;
+        sh:property [ sh:path ex:employs ; sh:class ex:Person ] .
+}
+
+# Data. ex:initech has no name and employs ex:acme, which is not a person.
+ex:data\/companies {
+    ex:acme    a ex:Company ; ex:name "Acme" ; ex:employs ex:alice .
+    ex:initech a ex:Company ; ex:employs ex:acme .
+}
