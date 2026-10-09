@@ -136,4 +136,4 @@ curl -u admin:$GDB_PASSWORD -X POST -H 'Content-Type: text/turtle' -H 'Accept: a
 
 ### AI Disclosure
 
-The synthetic data, links and scripts were generated using Cursor. This narrative was edited collaboratively by the authorsand Cursor and every sentence was fully reviewer by the author.
+The synthetic data, links and scripts were generated using Cursor. This narrative was edited collaboratively by the authors and Cursor and every sentence was fully reviewer by the author.
