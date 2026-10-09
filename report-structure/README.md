@@ -6,7 +6,7 @@ This folder proposes a leaner structure for the SHACL validation report that Gra
 
 - Every `sh:ValidationResult` repeats `rsx:dataGraph` for each data graph of the link and `rsx:shapesGraph` for each shapes graph.
 - In our illustration, which is similar to a real-life case for a client that we have, lifting the graph pair to the report makes that report about seven times smaller, in both triple count and bytes, with no loss of information.
-- The report also copies each failed shape. That isn't needed, because every result already references its shape with `sh:sourceShape`, and the shape is in the database. The exception is blank-node shapes, which can't be referenced from outside their graph; we suggest how to fix that below.
+- The report also includes a partial description of each failed shape. That isn't needed, because every result already references its shape with `sh:sourceShape`, and the shape is in the database. The exception is blank-node shapes, which can't be referenced from outside their graph; we suggest how to fix that below.
 
 ## Problem
 
@@ -45,19 +45,15 @@ The following snippet illustrates the problem (from `reports/repeat.ttl`; for re
 
 Each result names every data graph of the link and the shapes graph again, although they are the same for all results. The report therefore grows with the number of graphs times the number of results: here, with 368 data graphs, every result is about 377 triples long instead of about eight.
 
-### Every validation response report copies the failed shapes
+### Every validation response report includes the failed shapes
 
-The validation response report also contains each shape that results point at:
+Besides the results, the validation response report contains a partial description of each shape that results point at, once per report, not once per result. In `repeat`, all ten results point at `ex:SensorReadingShape`, and the report contains these shape triples once:
 
 ```turtle
-# stored, in ex:shapes/repeat
-ex:SensorReadingShape a sh:PropertyShape ;
-    sh:path ex:reading ; sh:datatype xsd:decimal ;
-    sh:minInclusive 0.0 ; sh:maxCount 1 ;
-    sh:name "reading" ; sh:description "A non-negative decimal reading." ;
-    sh:message "Reading must be a non-negative decimal." .
+[] a sh:ValidationReport ;
+    sh:result [ a sh:ValidationResult ; … ; sh:sourceShape ex:SensorReadingShape ],
+        … .   # ten results, all with the same sh:sourceShape
 
-# copied into the report (reports/repeat.ttl)
 ex:SensorReadingShape a sh:PropertyShape ;
     sh:path ex:reading ;
     sh:minInclusive 0.0 ;
@@ -65,9 +61,7 @@ ex:SensorReadingShape a sh:PropertyShape ;
     sh:message "Reading must be a non-negative decimal." .
 ```
 
-Those are not needed because they can be retrieved from the database from the  `sh:sourceShape`  property value of each `sh:ValidationResult`.
-
-It does so once per report, not once per result, for IRI shapes and blank-node shapes alike. The copy is partial: it holds only the constraints that failed, so the copy of `ex:SensorReadingShape` in `repeat` lacks the shape's `sh:datatype` and `sh:maxCount`. Nested shapes behind `sh:or`, `sh:and`, `sh:not` and `sh:node` are copied in full. For IRI shapes the copy is unnecessary, because `sh:sourceShape` already names the shape and the shape is in the shapes graph. A copied blank-node shape gets a fresh label, so it cannot be traced back to the stored shape.
+Those triples are not needed, because the shape can be retrieved from the database via the `sh:sourceShape` value of each `sh:ValidationResult`. They are also partial: only the constraint that failed is included, so the stored shape's `sh:datatype xsd:decimal` and `sh:maxCount 1` are missing. Nested shapes behind `sh:or`, `sh:and`, `sh:not` and `sh:node` are included in full. A blank-node shape gets a fresh label in the report, so it cannot be traced back to the stored shape.
 
 So the size problem is the graph pair, not the shapes. The shapes are a problem of clarity and traceability.
 
