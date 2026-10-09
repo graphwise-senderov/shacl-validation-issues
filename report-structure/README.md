@@ -1,11 +1,11 @@
 # Restructuring (DRY-ing) RDF4J SHACL validation reports
 
-This folder proposes a leaner structure for the SHACL validation report that GraphDB returns when a transaction fails validation. Every claim below comes from reports captured on GraphDB **12.0.0-SHACL-SIEMENS-RC1** (RDF4J 5.3.1-jakarta-Shacl-Improvements-TR1, see `raw/graphdb-version.json`), using `rsx:DataAndShapesGraphLink` links, with synthetic data only.
+This folder proposes a leaner structure for the SHACL validation report that GraphDB returns when a transaction fails validation. Every claim below comes from reports captured on GraphDB **12.0.0-SHACL-SIEMENS-RC1** (RDF4J 5.3.1-jakarta-Shacl-Improvements-TR1, see `raw/graphdb-version.json`), using `rsx:DataAndShapesGraphLink` links, with synthetic data that we provide.
 
 ## Summary
 
-- Every `sh:ValidationResult` repeats `rsx:dataGraph` for each data graph of the link and `rsx:shapesGraph` for each shapes graph. With 50 data graphs this is 51 of the 58 triples of each result, and 86% of the whole report.
-- Lifting the graph pair to the report cuts that report from 5906 to 857 triples and from 710 KB to 104 KB (same serializer for both), with no loss of information.
+- Every `sh:ValidationResult` repeats `rsx:dataGraph` for each data graph of the link and `rsx:shapesGraph` for each shapes graph.
+- In our illustration, which is similar to a real-life case for a client that we have, lifting the graph pair to the report cuts that report from 5906 to 857 triples and from 710 KB to 104 KB (same serializer for both), with no loss of information.
 - The report does copy the source shape, but **once per report, not once per result**. This holds for IRI shapes and for blank-node shapes. The copy is partial: it holds only the parameters of the constraints that failed, plus `sh:name`, `sh:description` and `sh:message`. For `sh:or`, `sh:and`, `sh:not`, `sh:node` and `sh:qualifiedValueShape` it also copies the nested shapes in full.
 - For logical constraints the result points at the outer shape. Nothing in the report says which member of an `sh:and` failed, and nested `sh:node` failures are not reported.
 
