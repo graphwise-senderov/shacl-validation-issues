@@ -133,3 +133,7 @@ curl -u admin:$GDB_PASSWORD -X POST -H 'Content-Type: text/turtle' -H 'Accept: a
 - `reports/<case>.ttl`: the raw report as formatted Turtle.
 - `dry-reports/<case>.ttl`: the same report rewritten into the proposed structure by `measure.py`.
 - `capture.sh`, `compare.py`, `measure.py`, `gen-fanout.py`, `measurements.md`.
+
+### AI Disclosure
+
+The synthetic data, links and scripts were generated using Cursor. The narrative was edited collaboratively by the authors and Cursor.
