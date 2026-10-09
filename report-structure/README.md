@@ -32,6 +32,14 @@ The following snippet illustrates the problem (from `reports/repeat.ttl`; for re
             sh:focusNode ex:sensor5 ; sh:value -5.5 ; sh:resultPath ex:reading ;
             sh:resultSeverity sh:Violation ;
             sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph ex:data/repeat-1, ex:data/repeat-2, ex:data/repeat-3,
+                          ex:data/repeat-4, ex:data/repeat-5 ;
+            rsx:shapesGraph ex:shapes/repeat ;
+            sh:focusNode ex:sensor9 ; sh:value -9.5 ; sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
             sh:sourceShape ex:SensorReadingShape ] .
 ```
 
@@ -65,7 +73,7 @@ So the size problem is the graph pair, not the shapes. The shapes are a problem 
 
 #### Level 1: the graph pair goes on the report
 
-If all results come from one data/shapes graph pair, which is the usual case of one link, `rsx:dataGraph` and `rsx:shapesGraph` go on the `sh:ValidationReport` and nowhere else. The same two results after level 1:
+If all results come from one data/shapes graph pair, which is the usual case of one link, `rsx:dataGraph` and `rsx:shapesGraph` go on the `sh:ValidationReport` and nowhere else. The same three results after level 1:
 
 ```turtle
 [] a sh:ValidationReport ;
@@ -80,6 +88,11 @@ If all results come from one data/shapes graph pair, which is the usual case of 
             sh:sourceShape ex:SensorReadingShape ],
         [ a sh:ValidationResult ;
             sh:focusNode ex:sensor5 ; sh:value -5.5 ; sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:sensor9 ; sh:value -9.5 ; sh:resultPath ex:reading ;
             sh:resultSeverity sh:Violation ;
             sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
             sh:sourceShape ex:SensorReadingShape ] .
