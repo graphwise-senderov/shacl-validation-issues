@@ -1,6 +1,6 @@
 # Restructuring GraphDB SHACL validation reports
 
-This folder proposes a leaner structure for the SHACL validation report that GraphDB returns when a transaction fails validation. Every claim below comes from reports captured on GraphDB **12.0.0-SHACL-SIEMENS-RC1** (RDF4J 5.3.1-jakarta-Shacl-Improvements-TR1, see `raw/graphdb-version.json`), in `rsx:DataAndShapesGraphLink` mode, with synthetic data only.
+This folder proposes a leaner structure for the SHACL validation report that GraphDB returns when a transaction fails validation. Every claim below comes from reports captured on GraphDB **12.0.0-SHACL-SIEMENS-RC1** (RDF4J 5.3.1-jakarta-Shacl-Improvements-TR1, see `raw/graphdb-version.json`), using `rsx:DataAndShapesGraphLink` links, with synthetic data only.
 
 ## Summary
 

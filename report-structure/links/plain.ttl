@@ -2,7 +2,7 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# Plain mode: post these shapes into rdf4j:SHACLShapeGraph, no link. Shapes there
+# No link: post these shapes into rdf4j:SHACLShapeGraph, no link. Shapes there
 # validate every graph in the repository, so they target a class that only this
 # scenario uses. The commit fails, so the shapes are not kept.
 ex:PlainPersonShape a sh:NodeShape ;
