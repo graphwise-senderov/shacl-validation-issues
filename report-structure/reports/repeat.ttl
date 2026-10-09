@@ -21,6 +21,20 @@ ex:SensorReadingShape a sh:PropertyShape ;
                 <http://example.org/data/repeat-4>,
                 <http://example.org/data/repeat-5> ;
             rsx:shapesGraph <http://example.org/shapes/repeat> ;
+            sh:focusNode ex:sensor3 ;
+            sh:resultMessage "Reading must be a non-negative decimal." ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ;
+            sh:value -3.5 ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/repeat-1>,
+                <http://example.org/data/repeat-2>,
+                <http://example.org/data/repeat-3>,
+                <http://example.org/data/repeat-4>,
+                <http://example.org/data/repeat-5> ;
+            rsx:shapesGraph <http://example.org/shapes/repeat> ;
             sh:focusNode ex:sensor7 ;
             sh:resultMessage "Reading must be a non-negative decimal." ;
             sh:resultPath ex:reading ;
@@ -35,13 +49,13 @@ ex:SensorReadingShape a sh:PropertyShape ;
                 <http://example.org/data/repeat-4>,
                 <http://example.org/data/repeat-5> ;
             rsx:shapesGraph <http://example.org/shapes/repeat> ;
-            sh:focusNode ex:sensor3 ;
+            sh:focusNode ex:sensor9 ;
             sh:resultMessage "Reading must be a non-negative decimal." ;
             sh:resultPath ex:reading ;
             sh:resultSeverity sh:Violation ;
             sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
             sh:sourceShape ex:SensorReadingShape ;
-            sh:value -3.5 ],
+            sh:value -9.5 ],
         [ a sh:ValidationResult ;
             rsx:dataGraph <http://example.org/data/repeat-1>,
                 <http://example.org/data/repeat-2>,
@@ -63,13 +77,13 @@ ex:SensorReadingShape a sh:PropertyShape ;
                 <http://example.org/data/repeat-4>,
                 <http://example.org/data/repeat-5> ;
             rsx:shapesGraph <http://example.org/shapes/repeat> ;
-            sh:focusNode ex:sensor6 ;
+            sh:focusNode ex:sensor8 ;
             sh:resultMessage "Reading must be a non-negative decimal." ;
             sh:resultPath ex:reading ;
             sh:resultSeverity sh:Violation ;
             sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
             sh:sourceShape ex:SensorReadingShape ;
-            sh:value -6.5 ],
+            sh:value -8.5 ],
         [ a sh:ValidationResult ;
             rsx:dataGraph <http://example.org/data/repeat-1>,
                 <http://example.org/data/repeat-2>,
@@ -105,13 +119,13 @@ ex:SensorReadingShape a sh:PropertyShape ;
                 <http://example.org/data/repeat-4>,
                 <http://example.org/data/repeat-5> ;
             rsx:shapesGraph <http://example.org/shapes/repeat> ;
-            sh:focusNode ex:sensor8 ;
+            sh:focusNode ex:sensor5 ;
             sh:resultMessage "Reading must be a non-negative decimal." ;
             sh:resultPath ex:reading ;
             sh:resultSeverity sh:Violation ;
             sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
             sh:sourceShape ex:SensorReadingShape ;
-            sh:value -8.5 ],
+            sh:value -5.5 ],
         [ a sh:ValidationResult ;
             rsx:dataGraph <http://example.org/data/repeat-1>,
                 <http://example.org/data/repeat-2>,
@@ -133,25 +147,11 @@ ex:SensorReadingShape a sh:PropertyShape ;
                 <http://example.org/data/repeat-4>,
                 <http://example.org/data/repeat-5> ;
             rsx:shapesGraph <http://example.org/shapes/repeat> ;
-            sh:focusNode ex:sensor9 ;
+            sh:focusNode ex:sensor6 ;
             sh:resultMessage "Reading must be a non-negative decimal." ;
             sh:resultPath ex:reading ;
             sh:resultSeverity sh:Violation ;
             sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
             sh:sourceShape ex:SensorReadingShape ;
-            sh:value -9.5 ],
-        [ a sh:ValidationResult ;
-            rsx:dataGraph <http://example.org/data/repeat-1>,
-                <http://example.org/data/repeat-2>,
-                <http://example.org/data/repeat-3>,
-                <http://example.org/data/repeat-4>,
-                <http://example.org/data/repeat-5> ;
-            rsx:shapesGraph <http://example.org/shapes/repeat> ;
-            sh:focusNode ex:sensor5 ;
-            sh:resultMessage "Reading must be a non-negative decimal." ;
-            sh:resultPath ex:reading ;
-            sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
-            sh:sourceShape ex:SensorReadingShape ;
-            sh:value -5.5 ] .
+            sh:value -6.5 ] .
 

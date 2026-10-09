@@ -14,44 +14,44 @@
             sh:resultPath ex:email ;
             sh:resultSeverity sh:Violation ;
             sh:sourceConstraintComponent sh:PatternConstraintComponent ;
-            sh:sourceShape _:N7b06e99bbfe747c9a4a39eefcafe0f09 ;
+            sh:sourceShape _:Nf95e41b54adc43369a11c29d17f4faa5 ;
             sh:value "second-bad" ],
-        [ a sh:ValidationResult ;
-            sh:focusNode ex:c2 ;
-            sh:resultPath ex:email ;
-            sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:PatternConstraintComponent ;
-            sh:sourceShape _:N7b06e99bbfe747c9a4a39eefcafe0f09 ;
-            sh:value "not-an-email" ],
-        [ a sh:ValidationResult ;
-            sh:focusNode ex:c5 ;
-            sh:resultPath ex:email ;
-            sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:MaxCountConstraintComponent ;
-            sh:sourceShape _:N7b06e99bbfe747c9a4a39eefcafe0f09 ],
-        [ a sh:ValidationResult ;
-            sh:focusNode ex:c3 ;
-            sh:resultPath ex:email ;
-            sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:PatternConstraintComponent ;
-            sh:sourceShape _:N7b06e99bbfe747c9a4a39eefcafe0f09 ;
-            sh:value "also-bad" ],
-        [ a sh:ValidationResult ;
-            sh:focusNode ex:c5 ;
-            sh:resultPath ex:email ;
-            sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:PatternConstraintComponent ;
-            sh:sourceShape _:N7b06e99bbfe747c9a4a39eefcafe0f09 ;
-            sh:value "first-bad" ],
         [ a sh:ValidationResult ;
             sh:focusNode ex:c4 ;
             sh:resultPath ex:email ;
             sh:resultSeverity sh:Violation ;
             sh:sourceConstraintComponent sh:PatternConstraintComponent ;
-            sh:sourceShape _:N7b06e99bbfe747c9a4a39eefcafe0f09 ;
-            sh:value "bad-again" ] .
+            sh:sourceShape _:Nf95e41b54adc43369a11c29d17f4faa5 ;
+            sh:value "bad-again" ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:c5 ;
+            sh:resultPath ex:email ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:PatternConstraintComponent ;
+            sh:sourceShape _:Nf95e41b54adc43369a11c29d17f4faa5 ;
+            sh:value "first-bad" ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:c5 ;
+            sh:resultPath ex:email ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MaxCountConstraintComponent ;
+            sh:sourceShape _:Nf95e41b54adc43369a11c29d17f4faa5 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:c3 ;
+            sh:resultPath ex:email ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:PatternConstraintComponent ;
+            sh:sourceShape _:Nf95e41b54adc43369a11c29d17f4faa5 ;
+            sh:value "also-bad" ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:c2 ;
+            sh:resultPath ex:email ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:PatternConstraintComponent ;
+            sh:sourceShape _:Nf95e41b54adc43369a11c29d17f4faa5 ;
+            sh:value "not-an-email" ] .
 
-_:N7b06e99bbfe747c9a4a39eefcafe0f09 a sh:PropertyShape ;
+_:Nf95e41b54adc43369a11c29d17f4faa5 a sh:PropertyShape ;
     sh:maxCount 1 ;
     sh:path ex:email ;
     sh:pattern "^[^@]+@[^@]+$" .

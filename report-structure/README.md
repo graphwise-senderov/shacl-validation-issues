@@ -3,7 +3,7 @@
 This folder proposes a leaner structure for the SHACL validation report that
 GraphDB returns when a transaction fails validation. Every claim below comes
 from reports captured on GraphDB **12.0.0-SHACL-SIEMENS-RC1** (RDF4J
-5.3.1-jakarta-Shacl-Improvements-TR1, see `captures/graphdb-version.json`),
+5.3.1-jakarta-Shacl-Improvements-TR1, see `raw/graphdb-version.json`),
 in `rsx:DataAndShapesGraphLink` mode, with synthetic data only.
 
 ## Summary
@@ -28,14 +28,18 @@ in `rsx:DataAndShapesGraphLink` mode, with synthetic data only.
 
 `capture.sh` loads each scenario in `input/`, then posts the link in `links/`
 into `rdf4j:SHACLShapeGraph`. The commit fails and the response body is the
-report, saved to `captures/<name>.nt`. `measure.py` counts it and writes
-pretty Turtle to `restructured/`. Full table: `measurements.md`.
+report, saved to `raw/<name>.nt`. `measure.py` counts it, writes it as
+pretty Turtle to `reports/<name>.ttl`, and writes the proposed forms to
+`dry-reports/`. Full table: `measurements.md`.
 
 | Scenario | Data graphs in link | Results | Triples | Triples per result | of which `rsx:` | Bytes (GraphDB) |
 |---|--:|--:|--:|--:|--:|--:|
-| `simple`: one missing name | 1 | 1 | 15 | 8 | 2 | 1 939 |
-| `repeat`: same shape, 10 violations | 5 | 10 | 159 | 14 | 6 | 20 900 |
-| `fanout`: same shape, 100 violations | 50 | 100 | 5 906 | 58 | 51 | 773 019 |
+| `simple`: one missing name | 1 | 1 | 15 | 8 | 2 | 1 951 |
+| `repeat`: same shape, 10 violations | 5 | 10 | 159 | 14 | 6 | 20 978 |
+| `fanout`: same shape, 100 violations | 50 | 100 | 5 906 | 58 | 51 | 773 637 |
+
+Raw byte counts vary by a few bytes between runs because GraphDB's
+blank-node labels differ in length; triple counts do not.
 
 A result costs about seven triples of its own (type, focus node, path, value,
 severity, constraint component, source shape, and a message if the shape has
@@ -44,7 +48,7 @@ every result of a link. A link with 368 data graphs therefore makes every
 result about 377 triples long, which is what turns a few thousand results
 into a report of hundreds of megabytes.
 
-Excerpt from `captures/repeat.nt` (as Turtle, two of ten results; prefixed
+Excerpt from `reports/repeat.ttl` (as Turtle, two of ten results; prefixed
 names containing `/` are shortened for reading):
 
 ```turtle
@@ -131,8 +135,8 @@ IRI could serve as the pair node, but shapes in `rdf4j:SHACLShapeGraph`
 
 ### Before and after
 
-The same ten results of `repeat` (files `restructured/repeat-as-is.ttl` and
-`restructured/repeat-level2.ttl`):
+The same ten results of `repeat` (files `reports/repeat.ttl` and
+`dry-reports/repeat-level2.ttl`):
 
 ```turtle
 # after: 99 triples instead of 159, 8 per result instead of 14
@@ -155,14 +159,16 @@ The same ten results of `repeat` (files `restructured/repeat-as-is.ttl` and
 | `repeat` (10 results, 5 graphs) | 159 triples | 105 | 99 |
 | `fanout` (100 results, 50 graphs) | 5 906 triples, 710 KB | 857, 104 KB | 854, 104 KB |
 | `logic` (4 results, 1 graph) | 81 triples | 75 | 37 |
-| `twolinks` (7 results, 2 pairs) | 78 triples | 79 | 76 |
+| `twolinks` (3 results, 2 pairs of one graph each) | 38 triples | 43 | 40 |
 
-Level 1 pays off as soon as a link has more than one graph or a pair has more
-than one result. Level 2 saves a constant per report, not per result.
+Level 1 pays off as soon as a link has more than one graph and more than one
+result. With several pairs of one data graph each and few results, as in
+`twolinks`, the pair nodes cost a few triples more than they save. Level 2
+saves a constant per report, not per result.
 
 ## Logical constraints, blank nodes, `sh:node` and qualified shapes
 
-What the captures show (`restructured/*-as-is.ttl`):
+What the captures show (`reports/*.ttl`):
 
 | Case | `sh:sourceShape` | Component | What is missing |
 |---|---|---|---|
@@ -195,7 +201,7 @@ blank shape, and their limits:
    of the shape. Stable across reloads and works everywhere. Two identical
    blank shapes under different parents get the same id, and any edit gives
    a new id. GraphDB already hashes shapes internally (the recursive shape in
-   `captures/recursive.nt` fails "while computing hashCode").
+   `raw/recursive.nt` fails "while computing hashCode").
 3. **IRIs in the shapes graph.** The only fully reliable way, and the one to
    recommend to modellers for shapes whose results matter.
 
@@ -260,11 +266,37 @@ rejected by GraphDB today.
 
 ## Reproduce
 
+Each scenario is independent. It needs only its own `input/<case>.trig` and
+`links/<case>.ttl`, uses its own graphs, classes and focus nodes, and gives the
+same report on an empty repository as in a repository where all other
+scenarios are already loaded. Every link commit fails validation and is
+rolled back, so nothing is left in `rdf4j:SHACLShapeGraph` afterwards
+(`capture.sh` prints the count after each case). Shapes posted straight into
+`rdf4j:SHACLShapeGraph` validate every graph in the repository, so `plain`
+targets a class, `ex:PlainPerson`, that no other scenario uses. Both ways
+were checked: every case alone in a fresh repository, and all cases in
+sequence in one repository; `compare.py` found the raw reports identical up
+to blank-node labels.
+
 ```bash
 export GDB_URL=http://localhost:7200 GDB_PASSWORD=…   # GDB_USER defaults to admin
-./capture.sh                     # creates tmp-shacl-report-structure-<date>, deletes it at the end
+./capture.sh                       # all cases in one temporary repository, into raw/
+./capture.sh logic bnode           # only some cases
+OUT=/tmp/iso ./capture.sh --isolated && python compare.py raw /tmp/iso   # one fresh repository per case
 pip install rdflib && python measure.py > measurements.md
-python gen-fanout.py             # regenerates input/fanout.trig and links/fanout.ttl
+python gen-fanout.py               # regenerates input/fanout.trig and links/fanout.ttl
+```
+
+`capture.sh` creates `tmp-shacl-report-structure-<date>[-<case>]` and deletes
+it at the end. To run one case by hand, create a repository from
+`repo-config.ttl` in the Workbench, then:
+
+```bash
+CTX='context=%3Chttp%3A%2F%2Frdf4j.org%2Fschema%2Frdf4j%23SHACLShapeGraph%3E'
+curl -u admin:$GDB_PASSWORD -X POST -H 'Content-Type: application/trig' \
+    --data-binary @input/logic.trig $GDB_URL/repositories/REPO/statements
+curl -u admin:$GDB_PASSWORD -X POST -H 'Content-Type: text/turtle' -H 'Accept: application/n-triples' \
+    --data-binary @links/logic.ttl "$GDB_URL/repositories/REPO/statements?$CTX"   # HTTP 500, body = report
 ```
 
 ## Files
@@ -274,8 +306,9 @@ python gen-fanout.py             # regenerates input/fanout.trig and links/fanou
 - `input/<name>.trig`: shapes and data per scenario; `links/<name>.ttl`: the
   link that triggers validation (`plain.ttl` holds shapes for
   `rdf4j:SHACLShapeGraph` instead).
-- `captures/`: raw reports as returned (N-Triples), the GraphDB version, and
-  the default content type.
-- `restructured/`: each capture as Turtle in three forms: `as-is`, `level1`,
-  `level2`.
-- `capture.sh`, `measure.py`, `gen-fanout.py`, `measurements.md`.
+- `raw/`: reports exactly as GraphDB returned them (N-Triples), the GraphDB
+  version, and the report without an `Accept` header plus its content type.
+- `reports/<case>.ttl`: the raw report as formatted Turtle.
+- `dry-reports/<case>-level1.ttl`, `-level2.ttl`: the same report rewritten
+  into the two proposed forms by `measure.py`.
+- `capture.sh`, `compare.py`, `measure.py`, `gen-fanout.py`, `measurements.md`.

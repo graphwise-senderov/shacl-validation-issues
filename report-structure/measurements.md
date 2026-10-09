@@ -12,8 +12,8 @@
 | fanout | as-is | 100 | 5906 | 58 | 5100 | 3 | 710245 |
 | fanout | level1 | 100 | 857 | 7 | 51 | 3 | 104266 |
 | fanout | level2 | 100 | 854 | 7 | 51 | 0 | 103897 |
-| logic | as-is | 4 | 81 | 9 | 8 | 38 | 9608 |
-| logic | level1 | 4 | 75 | 7 | 2 | 38 | 8900 |
+| logic | as-is | 4 | 81 | 9 | 8 | 38 | 9618 |
+| logic | level1 | 4 | 75 | 7 | 2 | 38 | 8910 |
 | logic | level2 | 4 | 37 | 7 | 2 | 0 | 4364 |
 | bnode | as-is | 6 | 66 | 8 (x1), 9 (x5) | 12 | 4 | 7694 |
 | bnode | level1 | 6 | 56 | 6 (x1), 7 (x5) | 2 | 4 | 6514 |
@@ -24,6 +24,6 @@
 | qualified | as-is | 1 | 18 | 8 | 2 | 6 | 2196 |
 | qualified | level1 | 1 | 18 | 6 | 2 | 6 | 2196 |
 | qualified | level2 | 1 | 18 | 6 | 2 | 6 | 2196 |
-| twolinks | as-is | 7 | 78 | 8 (x2), 9 (x5) | 14 | 7 | 9125 |
-| twolinks | level1 | 7 | 79 | 7 (x2), 8 (x5) | 4 | 13 | 9293 |
-| twolinks | level2 | 7 | 76 | 7 (x2), 8 (x5) | 4 | 10 | 8937 |
+| twolinks | as-is | 3 | 38 | 8 (x1), 9 (x2) | 6 | 6 | 4536 |
+| twolinks | level1 | 3 | 43 | 7 (x1), 8 (x2) | 4 | 12 | 5158 |
+| twolinks | level2 | 3 | 40 | 7 (x1), 8 (x2) | 4 | 9 | 4778 |

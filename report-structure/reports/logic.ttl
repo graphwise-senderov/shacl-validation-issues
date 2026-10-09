@@ -27,10 +27,10 @@ ex:ItemSizeShape a sh:PropertyShape ;
     sh:path ex:size .
 
 ex:OrgOwnerShape a sh:NodeShape ;
-    sh:class ex:Org .
+    sh:class ex:LogicOrg .
 
 ex:PersonOwnerShape a sh:NodeShape ;
-    sh:class ex:Person .
+    sh:class ex:LogicPerson .
 
 [] a sh:ValidationReport ;
     rdf4j:truncated false ;
@@ -38,21 +38,12 @@ ex:PersonOwnerShape a sh:NodeShape ;
     sh:result [ a sh:ValidationResult ;
             rsx:dataGraph <http://example.org/data/logic> ;
             rsx:shapesGraph <http://example.org/shapes/logic> ;
-            sh:focusNode ex:badSize ;
-            sh:resultPath ex:size ;
+            sh:focusNode ex:badColour ;
+            sh:resultPath ex:colour ;
             sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:AndConstraintComponent ;
-            sh:sourceShape ex:ItemSizeShape ;
-            sh:value "abcdefgh" ],
-        [ a sh:ValidationResult ;
-            rsx:dataGraph <http://example.org/data/logic> ;
-            rsx:shapesGraph <http://example.org/shapes/logic> ;
-            sh:focusNode ex:badOwner ;
-            sh:resultPath ex:owner ;
-            sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:OrConstraintComponent ;
-            sh:sourceShape ex:ItemOwnerShape ;
-            sh:value ex:robot ],
+            sh:sourceConstraintComponent sh:NotConstraintComponent ;
+            sh:sourceShape ex:ItemColourShape ;
+            sh:value "none" ],
         [ a sh:ValidationResult ;
             rsx:dataGraph <http://example.org/data/logic> ;
             rsx:shapesGraph <http://example.org/shapes/logic> ;
@@ -65,10 +56,19 @@ ex:PersonOwnerShape a sh:NodeShape ;
         [ a sh:ValidationResult ;
             rsx:dataGraph <http://example.org/data/logic> ;
             rsx:shapesGraph <http://example.org/shapes/logic> ;
-            sh:focusNode ex:badColour ;
-            sh:resultPath ex:colour ;
+            sh:focusNode ex:badOwner ;
+            sh:resultPath ex:owner ;
             sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:NotConstraintComponent ;
-            sh:sourceShape ex:ItemColourShape ;
-            sh:value "none" ] .
+            sh:sourceConstraintComponent sh:OrConstraintComponent ;
+            sh:sourceShape ex:ItemOwnerShape ;
+            sh:value ex:robot ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/logic> ;
+            rsx:shapesGraph <http://example.org/shapes/logic> ;
+            sh:focusNode ex:badSize ;
+            sh:resultPath ex:size ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:AndConstraintComponent ;
+            sh:sourceShape ex:ItemSizeShape ;
+            sh:value "abcdefgh" ] .
 

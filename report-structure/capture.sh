@@ -1,33 +1,71 @@
 #!/usr/bin/env bash
-# Reproduce the captures in captures/. Needs GDB_URL (e.g. http://localhost:7200)
-# and GDB_PASSWORD; GDB_USER defaults to admin. Creates a temporary repository,
-# runs each scenario, saves the raw report, and deletes the repository.
+# Capture the raw validation reports.
+#
+#   ./capture.sh [--isolated] [case ...]
+#
+# Without --isolated, all cases run in sequence in one temporary repository.
+# With --isolated, every case gets its own fresh repository. Each case uploads
+# input/<case>.trig, then posts links/<case>.ttl into rdf4j:SHACLShapeGraph,
+# which triggers validation; the failed commit returns the report, saved to
+# $OUT/<case>.nt (default raw/). recursive.nt holds an error message, not a
+# report: GraphDB rejects recursive shapes. Temporary repositories are deleted
+# at the end.
+#
+# Needs GDB_URL (e.g. http://localhost:7200) and GDB_PASSWORD; GDB_USER
+# defaults to admin.
 set -euo pipefail
 cd "$(dirname "$0")"
 : "${GDB_URL:?set GDB_URL}"
 CURL=(curl -sS -u "${GDB_USER:-admin}:${GDB_PASSWORD:?set GDB_PASSWORD}")
-REPO="${REPO:-tmp-shacl-report-structure-$(date +%Y%m%d)}"
+OUT="${OUT:-raw}"
+PREFIX="tmp-shacl-report-structure-$(date +%Y%m%d)"
 CTX='context=%3Chttp%3A%2F%2Frdf4j.org%2Fschema%2Frdf4j%23SHACLShapeGraph%3E'
+ISOLATED=
+if [[ "${1:-}" == --isolated ]]; then ISOLATED=1; shift; fi
+CASES=("$@")
+[[ ${#CASES[@]} -gt 0 ]] || CASES=(plain simple repeat fanout logic bnode node qualified recursive twolinks)
+mkdir -p "$OUT"
+CREATED=()
 
-curl -sS "$GDB_URL/rest/info/version" > captures/graphdb-version.json
-sed "s/rep:repositoryID \"[^\"]*\"/rep:repositoryID \"$REPO\"/" repo-config.ttl > "captures/.config.ttl"
-"${CURL[@]}" -f -X POST -F "config=@captures/.config.ttl" "$GDB_URL/rest/repositories"
-rm captures/.config.ttl
-trap '"${CURL[@]}" -X DELETE "$GDB_URL/rest/repositories/$REPO"; echo "deleted $REPO"' EXIT
+create_repo() {
+    sed "s/rep:repositoryID \"[^\"]*\"/rep:repositoryID \"$1\"/" repo-config.ttl > "$OUT/.config.ttl"
+    "${CURL[@]}" -f -X POST -F "config=@$OUT/.config.ttl" "$GDB_URL/rest/repositories"
+    rm "$OUT/.config.ttl"
+    CREATED+=("$1")
+}
+cleanup() {
+    for r in "${CREATED[@]}"; do
+        "${CURL[@]}" -X DELETE "$GDB_URL/rest/repositories/$r" && echo "deleted $r"
+    done
+}
+trap cleanup EXIT
 
-# recursive.nt holds an error message, not a report: GraphDB rejects recursive shapes.
-for s in plain simple repeat fanout logic bnode node qualified recursive twolinks; do
+run_case() {  # run_case REPO CASE
+    local repo=$1 s=$2 code
     "${CURL[@]}" -f -X POST -H 'Content-Type: application/trig' \
-        --data-binary "@input/$s.trig" "$GDB_URL/repositories/$REPO/statements"
-    # Adding the link (or, for plain, the shapes) triggers validation. A failed
-    # commit returns the validation report as the error body.
-    code=$("${CURL[@]}" -o "captures/$s.nt" -w '%{http_code}' -X POST \
+        --data-binary "@input/$s.trig" "$GDB_URL/repositories/$repo/statements"
+    code=$("${CURL[@]}" -o "$OUT/$s.nt" -w '%{http_code}' -X POST \
         -H 'Content-Type: text/turtle' -H 'Accept: application/n-triples' \
-        --data-binary "@links/$s.ttl" "$GDB_URL/repositories/$REPO/statements?$CTX")
-    echo "$s: HTTP $code, $(wc -c < "captures/$s.nt") bytes"
-done
+        --data-binary "@links/$s.ttl" "$GDB_URL/repositories/$repo/statements?$CTX")
+    echo "$s: HTTP $code, $(wc -c < "$OUT/$s.nt") bytes, $(shape_graph_size "$repo") statements left in rdf4j:SHACLShapeGraph"
+    if [[ $s == simple ]]; then
+        # The same report without an Accept header, to show the default format.
+        "${CURL[@]}" -o "$OUT/simple-default.out" -w '%{content_type}\n' -X POST \
+            -H 'Content-Type: text/turtle' --data-binary @links/simple.ttl \
+            "$GDB_URL/repositories/$repo/statements?$CTX" > "$OUT/simple-default.content-type"
+    fi
+}
+shape_graph_size() {
+    "${CURL[@]}" "$GDB_URL/repositories/$1/size?$CTX"
+}
 
-# The same simple report without an Accept header, to show the default format.
-"${CURL[@]}" -o captures/simple-default.out -w '%{content_type}\n' -X POST \
-    -H 'Content-Type: text/turtle' --data-binary @links/simple.ttl \
-    "$GDB_URL/repositories/$REPO/statements?$CTX" > captures/simple-default.content-type
+curl -sS "$GDB_URL/rest/info/version" > "$OUT/graphdb-version.json"
+if [[ -n $ISOLATED ]]; then
+    for s in "${CASES[@]}"; do
+        create_repo "$PREFIX-$s"
+        run_case "$PREFIX-$s" "$s"
+    done
+else
+    create_repo "$PREFIX"
+    for s in "${CASES[@]}"; do run_case "$PREFIX" "$s"; done
+fi

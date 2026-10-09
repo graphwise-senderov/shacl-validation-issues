@@ -25,12 +25,12 @@ ex:shapes\/logic {
     # owner must conform to one of two named node shapes
     ex:ItemOwnerShape a sh:PropertyShape ; sh:path ex:owner ;
         sh:or ( ex:PersonOwnerShape ex:OrgOwnerShape ) .
-    ex:PersonOwnerShape a sh:NodeShape ; sh:class ex:Person .
-    ex:OrgOwnerShape a sh:NodeShape ; sh:class ex:Org .
+    ex:PersonOwnerShape a sh:NodeShape ; sh:class ex:LogicPerson .
+    ex:OrgOwnerShape a sh:NodeShape ; sh:class ex:LogicOrg .
 }
 ex:data\/logic {
     ex:goodItem a ex:Item ; ex:code "A1" ; ex:size "ab" ; ex:colour "red" ; ex:owner ex:p1 .
-    ex:p1 a ex:Person .
+    ex:p1 a ex:LogicPerson .
     ex:badCode a ex:Item ; ex:code "2026-10-09"^^xsd:date .
     ex:badSize a ex:Item ; ex:size "abcdefgh" .
     ex:badColour a ex:Item ; ex:colour "none" .

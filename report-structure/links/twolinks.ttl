@@ -2,9 +2,9 @@
 @prefix ex: <http://example.org/> .
 
 # Two links in one transaction: one report with results from two graph pairs.
-ex:link\/simple a rsx:DataAndShapesGraphLink ;
-    rsx:dataGraph ex:data\/simple ;
-    rsx:shapesGraph ex:shapes\/simple .
-ex:link\/bnode a rsx:DataAndShapesGraphLink ;
-    rsx:dataGraph ex:data\/bnode ;
-    rsx:shapesGraph ex:shapes\/bnode .
+ex:link\/twolinks-a a rsx:DataAndShapesGraphLink ;
+    rsx:dataGraph ex:data\/twolinks-a ;
+    rsx:shapesGraph ex:shapes\/twolinks-a .
+ex:link\/twolinks-b a rsx:DataAndShapesGraphLink ;
+    rsx:dataGraph ex:data\/twolinks-b ;
+    rsx:shapesGraph ex:shapes\/twolinks-b .
