@@ -8,9 +8,11 @@ This folder proposes a leaner structure for the SHACL validation report that Gra
 - In our illustration, which is similar to a real-life case for a client that we have, lifting the graph pair to the report makes that report about seven times smaller, in both triple count and bytes, with no loss of information.
 - The report also copies each failed shape. That isn't needed, because every result already references its shape with `sh:sourceShape`, and the shape is in the database. The exception is blank-node shapes, which can't be referenced from outside their graph; we suggest how to fix that below.
 
-## The problem, measured
+## Methods
 
 `capture.sh` loads each scenario in `input/`, then posts the link in `links/` into `rdf4j:SHACLShapeGraph`. The commit fails and the response body is the report, saved to `raw/<name>.nt`. `measure.py` counts it, writes it as pretty Turtle to `reports/<name>.ttl`, and writes the proposed forms to `dry-reports/`. Full table: `measurements.md`.
+
+## Results
 
 | Scenario                             | Data graphs in link | Results | Triples | Triples per result | of which `rsx:` | Bytes (GraphDB) |
 |--------------------------------------|--------------------:|--------:|--------:|-------------------:|----------------:|----------------:|
