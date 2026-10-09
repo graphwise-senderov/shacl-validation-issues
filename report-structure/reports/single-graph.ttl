@@ -1,0 +1,104 @@
+@prefix ex: <http://example.org/> .
+@prefix rdf4j: <http://rdf4j.org/schema/rdf4j#> .
+@prefix rsx: <http://rdf4j.org/shacl-extensions#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:PumpSerialShape a sh:PropertyShape ;
+    sh:minCount 1 ;
+    sh:path ex:serial .
+
+ex:PumpPressureShape a sh:PropertyShape ;
+    sh:maxInclusive 10.0 ;
+    sh:path ex:pressure .
+
+[] a sh:ValidationReport ;
+    rdf4j:truncated false ;
+    sh:conforms false ;
+    sh:result [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/single-graph> ;
+            rsx:shapesGraph <http://example.org/shapes/single-graph> ;
+            sh:focusNode ex:pump10 ;
+            sh:resultPath ex:pressure ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MaxInclusiveConstraintComponent ;
+            sh:sourceShape ex:PumpPressureShape ;
+            sh:value 10.5 ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/single-graph> ;
+            rsx:shapesGraph <http://example.org/shapes/single-graph> ;
+            sh:focusNode ex:pump9 ;
+            sh:resultPath ex:serial ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape ex:PumpSerialShape ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/single-graph> ;
+            rsx:shapesGraph <http://example.org/shapes/single-graph> ;
+            sh:focusNode ex:pump9 ;
+            sh:resultPath ex:pressure ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MaxInclusiveConstraintComponent ;
+            sh:sourceShape ex:PumpPressureShape ;
+            sh:value 16.0 ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/single-graph> ;
+            rsx:shapesGraph <http://example.org/shapes/single-graph> ;
+            sh:focusNode ex:pump3 ;
+            sh:resultPath ex:serial ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape ex:PumpSerialShape ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/single-graph> ;
+            rsx:shapesGraph <http://example.org/shapes/single-graph> ;
+            sh:focusNode ex:pump5 ;
+            sh:resultPath ex:pressure ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MaxInclusiveConstraintComponent ;
+            sh:sourceShape ex:PumpPressureShape ;
+            sh:value 11.0 ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/single-graph> ;
+            rsx:shapesGraph <http://example.org/shapes/single-graph> ;
+            sh:focusNode ex:pump6 ;
+            sh:resultPath ex:serial ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape ex:PumpSerialShape ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/single-graph> ;
+            rsx:shapesGraph <http://example.org/shapes/single-graph> ;
+            sh:focusNode ex:pump12 ;
+            sh:resultPath ex:serial ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape ex:PumpSerialShape ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/single-graph> ;
+            rsx:shapesGraph <http://example.org/shapes/single-graph> ;
+            sh:focusNode ex:pump2 ;
+            sh:resultPath ex:pressure ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MaxInclusiveConstraintComponent ;
+            sh:sourceShape ex:PumpPressureShape ;
+            sh:value 12.0 ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/single-graph> ;
+            rsx:shapesGraph <http://example.org/shapes/single-graph> ;
+            sh:focusNode ex:pump7 ;
+            sh:resultPath ex:pressure ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MaxInclusiveConstraintComponent ;
+            sh:sourceShape ex:PumpPressureShape ;
+            sh:value 13.0 ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/single-graph> ;
+            rsx:shapesGraph <http://example.org/shapes/single-graph> ;
+            sh:focusNode ex:pump4 ;
+            sh:resultPath ex:pressure ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MaxInclusiveConstraintComponent ;
+            sh:sourceShape ex:PumpPressureShape ;
+            sh:value 15.5 ] .
+

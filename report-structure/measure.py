@@ -76,4 +76,4 @@ def print_table(rows):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:] or ["simple", "repeat", "fanout", "logic"])
+    main(sys.argv[1:] or ["single-graph", "repeat", "fanout", "logic"])

@@ -78,12 +78,12 @@ The proposal stays within the W3C SHACL report vocabulary: there is still exactl
 
 | Scenario | What it shows | As is | Proposed | Factor |
 |---|---|--:|--:|--:|
-| `simple` | One result in a link with one data graph: nothing to lift | 15 | 15 | 1.0× |
+| `single-graph` | Two shapes violated 10 times in a link with one data graph | 105 | 87 | 1.2× |
 | `repeat` | One shape violated 10 times in a link with 5 data graphs | 159 | 105 | 1.5× |
 | `fanout` | One shape violated 100 times in a link with 50 data graphs | 5 906 | 857 | 6.9× |
 | `logic` | Four results in a link with one data graph (also the `sh:xone` side finding) | 81 | 75 | 1.1× |
 
-The number columns are triple counts of the whole report, as GraphDB returns it and with the proposed structure. The factor is the as-is count divided by the proposed count, so higher is better. The factor grows with both the number of data graphs in the link and the number of results, as `fanout` shows; with one data graph and one result, as in `simple`, there is nothing to gain. Byte sizes shrink in the same proportion; see `measurements.md`.
+The number columns are triple counts of the whole report, as GraphDB returns it and with the proposed structure. The factor is the as-is count divided by the proposed count, so higher is better. The factor grows with both the number of data graphs in the link and the number of results, as `fanout` shows. With one data graph, as in `single-graph`, each result still saves two triples, so the gain is small but not zero. Byte sizes shrink in the same proportion; see `measurements.md`.
 
 ## Notes for modellers
 
@@ -100,7 +100,7 @@ Two observations do not affect the proposal, but modellers should be aware of th
 
 `capture.sh` loads each scenario in `input/`, then posts the link in `links/` into `rdf4j:SHACLShapeGraph`. The commit fails and the response body is the report, saved to `raw/<name>.nt`. `measure.py` counts it, writes it as pretty Turtle to `reports/<name>.ttl`, and writes the proposed form to `dry-reports/<name>.ttl`. Full table, including byte sizes: `measurements.md`. `recursive` produces an error message instead of a report and is not measured.
 
-Raw byte counts vary by a few bytes between runs because GraphDB's blank-node labels differ in length; triple counts do not. Without an `Accept` header the report comes as `application/shacl-validation-report+n-quads;charset=ISO-8859-1` (`raw/simple-default.*`).
+Raw byte counts vary by a few bytes between runs because GraphDB's blank-node labels differ in length; triple counts do not. Without an `Accept` header the report comes as `application/shacl-validation-report+n-quads;charset=ISO-8859-1` (`raw/single-graph-default.*`).
 
 ### Reproduce
 

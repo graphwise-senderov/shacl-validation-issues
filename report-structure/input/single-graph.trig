@@ -1,0 +1,29 @@
+@prefix ex: <http://example.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# One data graph and one shapes graph with several violations: twelve pumps,
+# six with a pressure above 10.0 and four without a serial number (10 results).
+ex:shapes\/single-graph {
+    ex:PumpShape a sh:NodeShape ;
+        sh:targetClass ex:Pump ;
+        sh:property ex:PumpPressureShape , ex:PumpSerialShape .
+    ex:PumpPressureShape a sh:PropertyShape ;
+        sh:path ex:pressure ; sh:datatype xsd:decimal ; sh:maxInclusive 10.0 .
+    ex:PumpSerialShape a sh:PropertyShape ;
+        sh:path ex:serial ; sh:minCount 1 ; sh:pattern "^P-[0-9]{3}$" .
+}
+ex:data\/single-graph {
+    ex:pump1 a ex:Pump ; ex:serial "P-001" ; ex:pressure 4.5 .
+    ex:pump2 a ex:Pump ; ex:serial "P-002" ; ex:pressure 12.0 .
+    ex:pump3 a ex:Pump ; ex:pressure 6.0 .
+    ex:pump4 a ex:Pump ; ex:serial "P-004" ; ex:pressure 15.5 .
+    ex:pump5 a ex:Pump ; ex:serial "P-005" ; ex:pressure 11.0 .
+    ex:pump6 a ex:Pump ; ex:pressure 7.5 .
+    ex:pump7 a ex:Pump ; ex:serial "P-007" ; ex:pressure 13.0 .
+    ex:pump8 a ex:Pump ; ex:serial "P-008" ; ex:pressure 5.0 .
+    ex:pump9 a ex:Pump ; ex:pressure 16.0 .
+    ex:pump10 a ex:Pump ; ex:serial "P-010" ; ex:pressure 10.5 .
+    ex:pump11 a ex:Pump ; ex:serial "P-011" ; ex:pressure 3.0 .
+    ex:pump12 a ex:Pump ; ex:pressure 8.0 .
+}

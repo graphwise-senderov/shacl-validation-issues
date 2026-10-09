@@ -23,7 +23,7 @@ CTX='context=%3Chttp%3A%2F%2Frdf4j.org%2Fschema%2Frdf4j%23SHACLShapeGraph%3E'
 ISOLATED=
 if [[ "${1:-}" == --isolated ]]; then ISOLATED=1; shift; fi
 CASES=("$@")
-[[ ${#CASES[@]} -gt 0 ]] || CASES=(simple repeat fanout logic recursive)
+[[ ${#CASES[@]} -gt 0 ]] || CASES=(single-graph repeat fanout logic recursive)
 mkdir -p "$OUT"
 CREATED=()
 
@@ -48,11 +48,11 @@ run_case() {  # run_case REPO CASE
         -H 'Content-Type: text/turtle' -H 'Accept: application/n-triples' \
         --data-binary "@links/$s.ttl" "$GDB_URL/repositories/$repo/statements?$CTX")
     echo "$s: HTTP $code, $(wc -c < "$OUT/$s.nt") bytes, $(shape_graph_size "$repo") statements left in rdf4j:SHACLShapeGraph"
-    if [[ $s == simple ]]; then
+    if [[ $s == single-graph ]]; then
         # The same report without an Accept header, to show the default format.
-        "${CURL[@]}" -o "$OUT/simple-default.out" -w '%{content_type}\n' -X POST \
-            -H 'Content-Type: text/turtle' --data-binary @links/simple.ttl \
-            "$GDB_URL/repositories/$repo/statements?$CTX" > "$OUT/simple-default.content-type"
+        "${CURL[@]}" -o "$OUT/single-graph-default.out" -w '%{content_type}\n' -X POST \
+            -H 'Content-Type: text/turtle' --data-binary @links/single-graph.ttl \
+            "$GDB_URL/repositories/$repo/statements?$CTX" > "$OUT/single-graph-default.content-type"
     fi
 }
 shape_graph_size() {
