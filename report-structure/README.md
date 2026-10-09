@@ -70,7 +70,7 @@ If all results come from one data/shapes graph pair, which is the usual case of 
             sh:sourceShape ex:SensorReadingShape ] .
 ```
 
-The cost per result drops from one triple per graph to zero. A transaction with several links, and so several data/shapes graph pairs, is left to the implementers, who may group the results differently or reject it.
+The cost per result drops from one triple per graph to zero—we only express the data and shapes graphs information once at root level.
 
 ## Results
 
