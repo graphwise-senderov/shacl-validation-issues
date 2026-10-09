@@ -12,7 +12,7 @@ This folder proposes a leaner structure for the SHACL validation report that Gra
 
 ### Every result repeats the graph pair
 
-Two of the ten results of the `repeat` scenario, as GraphDB returns them (from `reports/repeat.ttl`; for readability, `/` in prefixed names is not escaped here and in the examples below, so `ex:data/repeat-1` stands for `ex:data\/repeat-1`):
+The following snippet illustrates the problem (from `reports/repeat.ttl`; for readability, `/` in prefixed names is not escaped here and in the examples below, so `ex:data/repeat-1` stands for `ex:data\/repeat-1`):
 
 ```turtle
 [] a sh:ValidationReport ;
