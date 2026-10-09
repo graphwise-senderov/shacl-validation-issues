@@ -52,7 +52,7 @@ ex:SensorReadingShape a sh:PropertyShape ; sh:path ex:reading ;
 
 ### Every report copies the failed shapes
 
-We checked this claim against every capture. It does not hold in this version, but a weaker form does:
+We checked every capture for whether each result repeats the whole failing shape. It does not, but a weaker form holds:
 
 - **Copied once.** In `repeat` and `fanout`, ten and a hundred results share one copy of the IRI shape. In `bnode`, six results (two constraint components, four focus nodes) share one blank node label (`_:node18`), and its triples appear once. No capture contains a duplicate line.
 - **Partial.** `simple` copies `ex:PersonNameShape` with `sh:minCount` but without `sh:datatype`. A reader of the report sees a shape that differs from the stored one.
