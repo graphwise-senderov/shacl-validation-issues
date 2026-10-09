@@ -1,0 +1,7 @@
+@prefix rsx: <http://rdf4j.org/shacl-extensions#> .
+@prefix ex: <http://example.org/> .
+
+# Post into rdf4j:SHACLShapeGraph. Validates the five repeat data graphs together.
+ex:link\/repeat a rsx:DataAndShapesGraphLink ;
+    rsx:dataGraph ex:data\/repeat-1, ex:data\/repeat-2, ex:data\/repeat-3, ex:data\/repeat-4, ex:data\/repeat-5 ;
+    rsx:shapesGraph ex:shapes\/repeat .

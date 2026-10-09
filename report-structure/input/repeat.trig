@@ -1,0 +1,40 @@
+@prefix ex: <http://example.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Ten sensors with a negative reading, spread over five data graphs. One shape.
+ex:shapes\/repeat {
+    ex:SensorShape a sh:NodeShape ;
+        sh:targetClass ex:Sensor ;
+        sh:property ex:SensorReadingShape .
+    ex:SensorReadingShape a sh:PropertyShape ;
+        sh:path ex:reading ; sh:datatype xsd:decimal ;
+        sh:minInclusive 0.0 ; sh:maxCount 1 ;
+        sh:name "reading" ; sh:description "A non-negative decimal reading." ;
+        sh:message "Reading must be a non-negative decimal." .
+}
+ex:data\/repeat-1 {
+    ex:sensor1 a ex:Sensor ; ex:reading -1.5 .
+    ex:sensor2 a ex:Sensor ; ex:reading -2.5 .
+    ex:okSensor1 a ex:Sensor ; ex:reading 1.0 .
+}
+ex:data\/repeat-2 {
+    ex:sensor3 a ex:Sensor ; ex:reading -3.5 .
+    ex:sensor4 a ex:Sensor ; ex:reading -4.5 .
+    ex:okSensor2 a ex:Sensor ; ex:reading 1.0 .
+}
+ex:data\/repeat-3 {
+    ex:sensor5 a ex:Sensor ; ex:reading -5.5 .
+    ex:sensor6 a ex:Sensor ; ex:reading -6.5 .
+    ex:okSensor3 a ex:Sensor ; ex:reading 1.0 .
+}
+ex:data\/repeat-4 {
+    ex:sensor7 a ex:Sensor ; ex:reading -7.5 .
+    ex:sensor8 a ex:Sensor ; ex:reading -8.5 .
+    ex:okSensor4 a ex:Sensor ; ex:reading 1.0 .
+}
+ex:data\/repeat-5 {
+    ex:sensor9 a ex:Sensor ; ex:reading -9.5 .
+    ex:sensor10 a ex:Sensor ; ex:reading -10.5 .
+    ex:okSensor5 a ex:Sensor ; ex:reading 1.0 .
+}

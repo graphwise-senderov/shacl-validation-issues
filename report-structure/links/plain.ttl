@@ -1,0 +1,10 @@
+@prefix ex: <http://example.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Plain mode: post these shapes into rdf4j:SHACLShapeGraph, no link.
+ex:PlainPersonShape a sh:NodeShape ;
+    sh:targetClass ex:Person ;
+    sh:property ex:PlainPersonNameShape .
+ex:PlainPersonNameShape a sh:PropertyShape ;
+    sh:path ex:name ; sh:minCount 1 ; sh:datatype xsd:string .

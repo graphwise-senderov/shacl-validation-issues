@@ -1,0 +1,74 @@
+@prefix ex: <http://example.org/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdf4j: <http://rdf4j.org/schema/rdf4j#> .
+@prefix rsx: <http://rdf4j.org/shacl-extensions#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:ItemCodeShape a sh:PropertyShape ;
+    sh:or ( [ a sh:NodeShape ;
+                sh:datatype xsd:string ] [ a sh:NodeShape ;
+                sh:datatype xsd:integer ] ) ;
+    sh:path ex:code .
+
+ex:ItemColourShape a sh:PropertyShape ;
+    sh:not [ a sh:NodeShape ;
+            sh:hasValue "none" ] ;
+    sh:path ex:colour .
+
+ex:ItemOwnerShape a sh:PropertyShape ;
+    sh:or ( ex:PersonOwnerShape ex:OrgOwnerShape ) ;
+    sh:path ex:owner .
+
+ex:ItemSizeShape a sh:PropertyShape ;
+    sh:and ( [ a sh:NodeShape ;
+                sh:minLength 2 ] [ a sh:NodeShape ;
+                sh:maxLength 5 ] ) ;
+    sh:path ex:size .
+
+ex:OrgOwnerShape a sh:NodeShape ;
+    sh:class ex:Org .
+
+ex:PersonOwnerShape a sh:NodeShape ;
+    sh:class ex:Person .
+
+[] a sh:ValidationReport ;
+    rdf4j:truncated false ;
+    sh:conforms false ;
+    sh:result [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/logic> ;
+            rsx:shapesGraph <http://example.org/shapes/logic> ;
+            sh:focusNode ex:badSize ;
+            sh:resultPath ex:size ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:AndConstraintComponent ;
+            sh:sourceShape ex:ItemSizeShape ;
+            sh:value "abcdefgh" ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/logic> ;
+            rsx:shapesGraph <http://example.org/shapes/logic> ;
+            sh:focusNode ex:badOwner ;
+            sh:resultPath ex:owner ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:OrConstraintComponent ;
+            sh:sourceShape ex:ItemOwnerShape ;
+            sh:value ex:robot ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/logic> ;
+            rsx:shapesGraph <http://example.org/shapes/logic> ;
+            sh:focusNode ex:badCode ;
+            sh:resultPath ex:code ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:OrConstraintComponent ;
+            sh:sourceShape ex:ItemCodeShape ;
+            sh:value "2026-10-09"^^xsd:date ],
+        [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/logic> ;
+            rsx:shapesGraph <http://example.org/shapes/logic> ;
+            sh:focusNode ex:badColour ;
+            sh:resultPath ex:colour ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:NotConstraintComponent ;
+            sh:sourceShape ex:ItemColourShape ;
+            sh:value "none" ] .
+

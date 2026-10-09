@@ -1,0 +1,10 @@
+@prefix rsx: <http://rdf4j.org/shacl-extensions#> .
+@prefix ex: <http://example.org/> .
+
+# Two links in one transaction: one report with results from two graph pairs.
+ex:link\/simple a rsx:DataAndShapesGraphLink ;
+    rsx:dataGraph ex:data\/simple ;
+    rsx:shapesGraph ex:shapes\/simple .
+ex:link\/bnode a rsx:DataAndShapesGraphLink ;
+    rsx:dataGraph ex:data\/bnode ;
+    rsx:shapesGraph ex:shapes\/bnode .

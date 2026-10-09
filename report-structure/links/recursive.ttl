@@ -1,0 +1,7 @@
+@prefix rsx: <http://rdf4j.org/shacl-extensions#> .
+@prefix ex: <http://example.org/> .
+
+# Post into rdf4j:SHACLShapeGraph. Validates ex:data/recursive against ex:shapes/recursive.
+ex:link\/recursive a rsx:DataAndShapesGraphLink ;
+    rsx:dataGraph ex:data\/recursive ;
+    rsx:shapesGraph ex:shapes\/recursive .

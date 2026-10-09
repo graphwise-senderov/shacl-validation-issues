@@ -1,0 +1,22 @@
+@prefix ex: <http://example.org/> .
+@prefix rdf4j: <http://rdf4j.org/schema/rdf4j#> .
+@prefix rsx: <http://rdf4j.org/shacl-extensions#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a sh:ValidationReport ;
+    rdf4j:truncated false ;
+    sh:conforms false ;
+    sh:result [ a sh:ValidationResult ;
+            rsx:dataGraph <http://example.org/data/qualified> ;
+            rsx:shapesGraph <http://example.org/shapes/qualified> ;
+            sh:focusNode ex:car1 ;
+            sh:resultPath ex:part ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:QualifiedMinCountConstraintComponent ;
+            sh:sourceShape [ a sh:PropertyShape ;
+                    sh:path ex:part ;
+                    sh:qualifiedMinCount 4 ;
+                    sh:qualifiedValueShape [ a sh:NodeShape ;
+                            sh:class ex:Wheel ] ] ] .
+

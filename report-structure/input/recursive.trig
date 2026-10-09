@@ -1,0 +1,15 @@
+@prefix ex: <http://example.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+# A recursive shape: everyone a member knows must conform to the same shape.
+# ex:m2 has no name, so ex:m2 fails directly and ex:m1 fails through sh:node.
+ex:shapes\/recursive {
+    ex:MemberShape a sh:NodeShape ;
+        sh:targetClass ex:Member ;
+        sh:property [ sh:path ex:name ; sh:minCount 1 ] ;
+        sh:property [ sh:path ex:knows ; sh:node ex:MemberShape ] .
+}
+ex:data\/recursive {
+    ex:m1 a ex:Member ; ex:name "M1" ; ex:knows ex:m2 .
+    ex:m2 a ex:Member .
+}

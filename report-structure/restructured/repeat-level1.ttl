@@ -1,0 +1,103 @@
+@prefix ex: <http://example.org/> .
+@prefix rdf4j: <http://rdf4j.org/schema/rdf4j#> .
+@prefix rsx: <http://rdf4j.org/shacl-extensions#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:SensorReadingShape a sh:PropertyShape ;
+    sh:description "A non-negative decimal reading." ;
+    sh:message "Reading must be a non-negative decimal." ;
+    sh:minInclusive 0.0 ;
+    sh:name "reading" ;
+    sh:path ex:reading .
+
+[] a sh:ValidationReport ;
+    rdf4j:truncated false ;
+    rsx:dataGraph <http://example.org/data/repeat-1>,
+        <http://example.org/data/repeat-2>,
+        <http://example.org/data/repeat-3>,
+        <http://example.org/data/repeat-4>,
+        <http://example.org/data/repeat-5> ;
+    rsx:shapesGraph <http://example.org/shapes/repeat> ;
+    sh:conforms false ;
+    sh:result [ a sh:ValidationResult ;
+            sh:focusNode ex:sensor7 ;
+            sh:resultMessage "Reading must be a non-negative decimal." ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ;
+            sh:value -7.5 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:sensor3 ;
+            sh:resultMessage "Reading must be a non-negative decimal." ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ;
+            sh:value -3.5 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:sensor1 ;
+            sh:resultMessage "Reading must be a non-negative decimal." ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ;
+            sh:value -1.5 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:sensor6 ;
+            sh:resultMessage "Reading must be a non-negative decimal." ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ;
+            sh:value -6.5 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:sensor2 ;
+            sh:resultMessage "Reading must be a non-negative decimal." ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ;
+            sh:value -2.5 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:sensor10 ;
+            sh:resultMessage "Reading must be a non-negative decimal." ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ;
+            sh:value -10.5 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:sensor8 ;
+            sh:resultMessage "Reading must be a non-negative decimal." ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ;
+            sh:value -8.5 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:sensor4 ;
+            sh:resultMessage "Reading must be a non-negative decimal." ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ;
+            sh:value -4.5 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:sensor9 ;
+            sh:resultMessage "Reading must be a non-negative decimal." ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ;
+            sh:value -9.5 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:sensor5 ;
+            sh:resultMessage "Reading must be a non-negative decimal." ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:SensorReadingShape ;
+            sh:value -5.5 ] .
+

@@ -1,0 +1,765 @@
+@prefix ex: <http://example.org/> .
+@prefix rdf4j: <http://rdf4j.org/schema/rdf4j#> .
+@prefix rsx: <http://rdf4j.org/shacl-extensions#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:MeterReadingShape a sh:PropertyShape ;
+    sh:minInclusive 0 ;
+    sh:path ex:reading .
+
+[] a sh:ValidationReport ;
+    rdf4j:truncated false ;
+    rsx:dataGraph <http://example.org/data/fanout-01>,
+        <http://example.org/data/fanout-02>,
+        <http://example.org/data/fanout-03>,
+        <http://example.org/data/fanout-04>,
+        <http://example.org/data/fanout-05>,
+        <http://example.org/data/fanout-06>,
+        <http://example.org/data/fanout-07>,
+        <http://example.org/data/fanout-08>,
+        <http://example.org/data/fanout-09>,
+        <http://example.org/data/fanout-10>,
+        <http://example.org/data/fanout-11>,
+        <http://example.org/data/fanout-12>,
+        <http://example.org/data/fanout-13>,
+        <http://example.org/data/fanout-14>,
+        <http://example.org/data/fanout-15>,
+        <http://example.org/data/fanout-16>,
+        <http://example.org/data/fanout-17>,
+        <http://example.org/data/fanout-18>,
+        <http://example.org/data/fanout-19>,
+        <http://example.org/data/fanout-20>,
+        <http://example.org/data/fanout-21>,
+        <http://example.org/data/fanout-22>,
+        <http://example.org/data/fanout-23>,
+        <http://example.org/data/fanout-24>,
+        <http://example.org/data/fanout-25>,
+        <http://example.org/data/fanout-26>,
+        <http://example.org/data/fanout-27>,
+        <http://example.org/data/fanout-28>,
+        <http://example.org/data/fanout-29>,
+        <http://example.org/data/fanout-30>,
+        <http://example.org/data/fanout-31>,
+        <http://example.org/data/fanout-32>,
+        <http://example.org/data/fanout-33>,
+        <http://example.org/data/fanout-34>,
+        <http://example.org/data/fanout-35>,
+        <http://example.org/data/fanout-36>,
+        <http://example.org/data/fanout-37>,
+        <http://example.org/data/fanout-38>,
+        <http://example.org/data/fanout-39>,
+        <http://example.org/data/fanout-40>,
+        <http://example.org/data/fanout-41>,
+        <http://example.org/data/fanout-42>,
+        <http://example.org/data/fanout-43>,
+        <http://example.org/data/fanout-44>,
+        <http://example.org/data/fanout-45>,
+        <http://example.org/data/fanout-46>,
+        <http://example.org/data/fanout-47>,
+        <http://example.org/data/fanout-48>,
+        <http://example.org/data/fanout-49>,
+        <http://example.org/data/fanout-50> ;
+    rsx:shapesGraph <http://example.org/shapes/fanout> ;
+    sh:conforms false ;
+    sh:result [ a sh:ValidationResult ;
+            sh:focusNode ex:meter40-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter31-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter5-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter17-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter29-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter14-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter34-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter49-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter50-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter10-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter22-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter33-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter24-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter23-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter36-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter37-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter21-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter43-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter48-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter48-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter9-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter1-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter30-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter30-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter22-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter46-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter28-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter11-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter15-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter2-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter27-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter19-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter44-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter35-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter26-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter2-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter45-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter42-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter31-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter33-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter1-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter10-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter32-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter18-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter38-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter29-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter6-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter25-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter37-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter39-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter20-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter14-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter26-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter7-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter35-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter41-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter47-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter39-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter23-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter4-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter3-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter24-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter21-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter9-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter38-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter41-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter46-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter28-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter50-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter13-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter32-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter4-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter13-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter47-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter19-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter3-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter12-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter27-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter34-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter11-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter49-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter7-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter15-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter16-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter44-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter20-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter17-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter5-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter40-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter25-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter42-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter43-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter8-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter45-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter18-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter8-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter36-1 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter12-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter16-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode ex:meter6-2 ;
+            sh:resultPath ex:reading ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinInclusiveConstraintComponent ;
+            sh:sourceShape ex:MeterReadingShape ;
+            sh:value -2 ] .
+
