@@ -29,8 +29,6 @@
                 <http://example.org/shapes/simple>,
                 <http://example.org/shapes/repeat>,
                 <http://example.org/shapes/logic>,
-                <http://example.org/shapes/bnode>,
-                <http://example.org/shapes/node>,
                 <http://example.org/shapes/fanout>,
                 <http://example.org/shapes/recursive>
         ]

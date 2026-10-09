@@ -1,24 +1,20 @@
 """Measure the captured reports and rewrite them into the proposed structure.
 
-For each raw/<name>.nt this prints triple counts and N-Triples sizes for
-three forms. It writes the as-is form as Turtle to reports/<name>.ttl and the
-two proposed forms to dry-reports/<name>-level1.ttl and -level2.ttl:
+For each raw/<name>.nt this prints triple counts and N-Triples sizes for two
+forms. It writes the as-is form as Turtle to reports/<name>.ttl and the
+proposed form to dry-reports/<name>.ttl:
 
-  as-is   the report as GraphDB returned it
-  level1  rsx:dataGraph / rsx:shapesGraph lifted from the results to the report
-          (each capture has one data/shapes graph pair)
-  level2  level1, with copied shape triples kept only for blank-node source shapes;
-          an IRI shape is referenced by sh:sourceShape <iri> and resolves in the
-          shapes graph named on the report
+  as-is     the report as GraphDB returned it
+  proposed  rsx:dataGraph / rsx:shapesGraph lifted from the results to the
+            report (each capture has one data/shapes graph pair)
 
-Byte counts use rdflib's N-Triples for all three forms, so they are comparable.
+Byte counts use rdflib's N-Triples for both forms, so they are comparable.
 
 Requires rdflib (pip install rdflib).
 """
 import sys
 from collections import Counter
-from pathlib import Path
-from rdflib import BNode, Graph, Namespace, RDF
+from rdflib import Graph, Namespace, RDF
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
 RSX = Namespace("http://rdf4j.org/shacl-extensions#")
@@ -30,7 +26,8 @@ def nt_size(g: Graph) -> int:
     return len(g.serialize(format="nt", encoding="utf-8"))
 
 
-def level1(g: Graph) -> Graph:
+def propose(g: Graph) -> Graph:
+    """Move rsx:dataGraph and rsx:shapesGraph from every result to the report."""
     g = Graph() + g
     report = g.value(predicate=RDF.type, object=SH.ValidationReport)
     for r in list(g.objects(report, SH.result)):
@@ -41,66 +38,29 @@ def level1(g: Graph) -> Graph:
     return g
 
 
-def closure(g: Graph, node) -> set:
-    """Triples of node plus those of blank nodes reachable from it."""
-    seen, todo, out = set(), [node], set()
-    while todo:
-        n = todo.pop()
-        if n in seen:
-            continue
-        seen.add(n)
-        for t in g.triples((n, None, None)):
-            out.add(t)
-            if isinstance(t[2], BNode):
-                todo.append(t[2])
-    return out
-
-
-def level2(g: Graph) -> Graph:
-    """Keep the report, its results, and copies of blank-node source shapes only."""
-    report = g.value(predicate=RDF.type, object=SH.ValidationReport)
-    keep = closure(g, report)
-    for shape in set(g.objects(None, SH.sourceShape)):
-        if isinstance(shape, BNode):
-            keep |= closure(g, shape)
-    h = Graph()
-    for t in keep:
-        h.add(t)
-    return h
-
-
 def stats(g: Graph) -> dict:
     report = g.value(predicate=RDF.type, object=SH.ValidationReport)
     results = list(g.objects(report, SH.result))
-    own = sum(1 for n in [report, *results] for _ in g.triples((n, None, None)))
     per_result = Counter(len(list(g.triples((r, None, None)))) for r in results)
     return {
         "results": len(results),
         "triples": len(g),
         "per_result": dict(sorted(per_result.items())),
         "rsx_triples": sum(1 for p in LINK_PROPS for _ in g.triples((None, p, None))),
-        "other_triples": len(g) - own,
         "bytes": nt_size(g),
     }
 
 
 def main(names):
-    for d in ("reports", "dry-reports"):
-        Path(d).mkdir(exist_ok=True)
-    rows = [["capture", "form", "results", "triples", "triples per result", "rsx triples", "shape triples", "N-Triples bytes"]]
+    rows = [["capture", "form", "results", "triples", "triples per result", "rsx triples", "N-Triples bytes"]]
     for name in names:
         g = Graph().parse(f"raw/{name}.nt", format="nt")
-        raw = Path(f"raw/{name}.nt").read_text().splitlines()
-        dup = len(raw) - len(set(raw))
-        for form, h in (("as-is", g), ("level1", level1(g)), ("level2", level2(level1(g)))):
+        for form, h, target in (("as-is", g, f"reports/{name}.ttl"), ("proposed", propose(g), f"dry-reports/{name}.ttl")):
             h.bind("sh", SH); h.bind("rsx", RSX); h.bind("rdf4j", "http://rdf4j.org/schema/rdf4j#"); h.bind("ex", "http://example.org/")
-            target = f"reports/{name}.ttl" if form == "as-is" else f"dry-reports/{name}-{form}.ttl"
             h.serialize(target, format="turtle")
             s = stats(h)
-            pr = ", ".join(f"{k}" + (f" (x{v})" if len(s['per_result']) > 1 else "") for k, v in s["per_result"].items())
-            rows.append([name, form, s["results"], s["triples"], pr, s["rsx_triples"], s["other_triples"], s["bytes"]])
-        if dup:
-            rows.append([name, f"(raw file has {dup} duplicate lines)", "", "", "", "", "", ""])
+            pr = ", ".join(f"{k}" + (f" (x{v})" if len(s["per_result"]) > 1 else "") for k, v in s["per_result"].items())
+            rows.append([name, form, s["results"], s["triples"], pr, s["rsx_triples"], s["bytes"]])
     print_table(rows)
 
 
@@ -116,4 +76,4 @@ def print_table(rows):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:] or ["simple", "repeat", "fanout", "logic", "bnode", "node"])
+    main(sys.argv[1:] or ["simple", "repeat", "fanout", "logic"])

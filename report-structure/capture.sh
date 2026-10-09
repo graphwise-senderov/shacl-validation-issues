@@ -23,7 +23,7 @@ CTX='context=%3Chttp%3A%2F%2Frdf4j.org%2Fschema%2Frdf4j%23SHACLShapeGraph%3E'
 ISOLATED=
 if [[ "${1:-}" == --isolated ]]; then ISOLATED=1; shift; fi
 CASES=("$@")
-[[ ${#CASES[@]} -gt 0 ]] || CASES=(simple repeat fanout logic bnode node recursive)
+[[ ${#CASES[@]} -gt 0 ]] || CASES=(simple repeat fanout logic recursive)
 mkdir -p "$OUT"
 CREATED=()
 
@@ -35,7 +35,7 @@ create_repo() {
 }
 cleanup() {
     for r in "${CREATED[@]}"; do
-        "${CURL[@]}" -X DELETE "$GDB_URL/rest/repositories/$r" && echo "deleted $r"
+        "${CURL[@]}" -f -X DELETE "$GDB_URL/rest/repositories/$r" && echo "deleted $r" || echo "could not delete $r"
     done
 }
 trap cleanup EXIT
