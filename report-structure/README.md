@@ -35,7 +35,7 @@ The following snippet illustrates the problem (from `reports/repeat.ttl`; for re
             sh:sourceShape ex:SensorReadingShape ] .
 ```
 
-Each result names every data graph of the link and the shapes graph again, although they are the same for all results. The report therefore grows with the number of graphs times the number of results: with 368 data graphs, every result is about 377 triples long instead of about eight.
+Each result names every data graph of the link and the shapes graph again, although they are the same for all results. The report therefore grows with the number of graphs times the number of results: here, with 368 data graphs, every result is about 377 triples long instead of about eight.
 
 ### Every report copies the failed shapes
 
