@@ -86,7 +86,6 @@ The number columns are triple counts of the whole report, as GraphDB returns it 
 ## Compatibility with the W3C report vocabulary
 
 - SHACL requires exactly one `sh:ValidationReport` and allows additional information in the report graph. The proposal keeps one report and only moves `rsx:` properties, which are an RDF4J extension in the first place.
-- Clients that read `rsx:dataGraph` from a result must follow one more step: `?result ^sh:result/rsx:dataGraph ?g`. A configuration flag could keep the old form for a transition period.
 - All `sh:` properties of the results stay as they are.
 
 ## Side findings
