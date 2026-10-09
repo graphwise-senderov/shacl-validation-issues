@@ -39,7 +39,25 @@ Each result names every data graph of the link and the shapes graph again, altho
 
 ### Every report copies the failed shapes
 
-The report also copies each shape that results point at. It does so once per report, not once per result, for IRI shapes and blank-node shapes alike. The copy is partial: it holds only the constraints that failed, so the copy of `ex:SensorReadingShape` in `repeat` lacks the shape's `sh:datatype` and `sh:maxCount`. Nested shapes behind `sh:or`, `sh:and`, `sh:not` and `sh:node` are copied in full. For IRI shapes the copy is unnecessary, because `sh:sourceShape` already names the shape and the shape is in the shapes graph. A copied blank-node shape gets a fresh label, so it cannot be traced back to the stored shape.
+The report also copies each shape that results point at. In `repeat`, the stored shape and its copy in the report are:
+
+```turtle
+# stored, in ex:shapes/repeat
+ex:SensorReadingShape a sh:PropertyShape ;
+    sh:path ex:reading ; sh:datatype xsd:decimal ;
+    sh:minInclusive 0.0 ; sh:maxCount 1 ;
+    sh:name "reading" ; sh:description "A non-negative decimal reading." ;
+    sh:message "Reading must be a non-negative decimal." .
+
+# copied into the report (reports/repeat.ttl)
+ex:SensorReadingShape a sh:PropertyShape ;
+    sh:path ex:reading ;
+    sh:minInclusive 0.0 ;
+    sh:name "reading" ; sh:description "A non-negative decimal reading." ;
+    sh:message "Reading must be a non-negative decimal." .
+```
+
+It does so once per report, not once per result, for IRI shapes and blank-node shapes alike. The copy is partial: it holds only the constraints that failed, so the copy of `ex:SensorReadingShape` in `repeat` lacks the shape's `sh:datatype` and `sh:maxCount`. Nested shapes behind `sh:or`, `sh:and`, `sh:not` and `sh:node` are copied in full. For IRI shapes the copy is unnecessary, because `sh:sourceShape` already names the shape and the shape is in the shapes graph. A copied blank-node shape gets a fresh label, so it cannot be traced back to the stored shape.
 
 So the size problem is the graph pair, not the shapes. The shapes are a problem of clarity and traceability.
 
